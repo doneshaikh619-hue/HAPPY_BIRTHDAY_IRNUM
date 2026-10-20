@@ -1,17 +1,16 @@
 /**
  * Date Lock & High-Precision Countdown Controller
  * Restricts access until October 21st, 2026.
- * Includes VIP / Creator Preview bypass with elegant unlock animation.
+ * Passcode for Irnum & Creator: 2721.
  */
 
-// Target date: October 21, 2026 00:00:00 Local Time
-export const TARGET_DATE = new Date(2026, 9, 21, 0, 0, 0); // Month is 0-indexed: 9 = October
+export const TARGET_DATE = new Date(2026, 9, 21, 0, 0, 0); // October 21, 2026 Local Time
 
 export class Gatekeeper {
   constructor(options = {}) {
     this.targetDate = options.targetDate || TARGET_DATE;
-    this.passcode = "2110"; // Default VIP pass
-    this.storageKey = "irnum_tribute_unlocked";
+    this.passcode = "2721"; // Explicit secret code
+    this.storageKey = "irnum_tribute_unlocked_2721";
     this.onUnlockCallback = options.onUnlock || (() => {});
     this.isUnlocked = false;
     this.timerInterval = null;
@@ -27,7 +26,6 @@ export class Gatekeeper {
     this.minutesEl = document.getElementById("cd-minutes");
     this.secondsEl = document.getElementById("cd-seconds");
     
-    // Check if previously unlocked in this session or if date has passed
     const storedUnlock = sessionStorage.getItem(this.storageKey);
     const now = new Date();
 
@@ -36,7 +34,6 @@ export class Gatekeeper {
       return;
     }
 
-    // Otherwise, start countdown and wire up lock interactions
     this.startCountdown();
     this.setupBypassControls();
   }
@@ -86,13 +83,15 @@ export class Gatekeeper {
     const submitPassBtn = document.getElementById("btn-submit-passcode");
     const passInput = document.getElementById("vip-passcode-input");
     const passError = document.getElementById("vip-pass-error");
-    const quickUnlockBtn = document.getElementById("btn-quick-preview");
 
     if (bypassBtn && bypassModal) {
       bypassBtn.addEventListener("click", () => {
         bypassModal.classList.remove("hidden");
         bypassModal.classList.add("flex");
-        if (passInput) passInput.focus();
+        if (passInput) {
+          passInput.value = "";
+          passInput.focus();
+        }
       });
     }
 
@@ -105,7 +104,7 @@ export class Gatekeeper {
     }
 
     const attemptUnlock = (code) => {
-      if (code === this.passcode || code === "admin" || code === "irnum") {
+      if (code === this.passcode) {
         sessionStorage.setItem(this.storageKey, "true");
         if (bypassModal) {
           bypassModal.classList.add("hidden");
@@ -115,7 +114,11 @@ export class Gatekeeper {
       } else {
         if (passError) {
           passError.classList.remove("hidden");
-          passError.textContent = "Invalid passcode. Hint: Use 2110 or click Quick Preview.";
+          passError.textContent = "Incorrect passcode. Please enter the valid key.";
+        }
+        if (passInput) {
+          passInput.classList.add("border-red-500");
+          setTimeout(() => passInput.classList.remove("border-red-500"), 1000);
         }
       }
     };
@@ -126,12 +129,6 @@ export class Gatekeeper {
       });
       passInput.addEventListener("keydown", (e) => {
         if (e.key === "Enter") attemptUnlock(passInput.value.trim());
-      });
-    }
-
-    if (quickUnlockBtn) {
-      quickUnlockBtn.addEventListener("click", () => {
-        attemptUnlock(this.passcode);
       });
     }
   }
@@ -162,16 +159,14 @@ export class Gatekeeper {
     }
 
     if (unlockStatus) {
-      unlockStatus.textContent = isAutomatic ? "Time Reached · Portal Open" : "Passcode Verified · Welcome Irnum";
+      unlockStatus.textContent = isAutomatic ? "October 21 Reached · Portal Open" : "Key Verified · Welcome Irnum";
       unlockStatus.classList.add("text-emerald-400", "border-emerald-500/40");
     }
 
-    // Trigger celebration stardust
     if (window.triggerGoldenBurst) {
       window.triggerGoldenBurst();
     }
 
-    // Smooth cinematic dissolve
     setTimeout(() => {
       if (this.lockOverlay) {
         this.lockOverlay.classList.add("gate-dissolve");

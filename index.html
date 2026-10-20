@@ -100,33 +100,30 @@
         Target: October 21, 2026 · 00:00:00
       </div>
 
-      <!-- VIP / Creator Bypass Key -->
+      <!-- VIP / Passcode Key -->
       <div class="pt-6 border-t border-white/[0.06] flex items-center justify-center gap-4">
         <button id="btn-vip-bypass" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/[0.03] hover:bg-white/[0.08] border border-white/10 hover:border-amber-400/50 text-xs font-mono tracking-wider text-amber-200/80 transition-all duration-300">
           <svg class="w-3.5 h-3.5 stroke-current stroke-[1.5]" viewBox="0 0 24 24" fill="none"><path d="M21 2l-2 2m-1.5 1.5L12 11m0 0v3m0-3h3m-6 3l-3 3H3v-3l3-3m0 0a5 5 0 1 1 7-7 5 5 0 0 1-7 7z"/></svg>
-          Creator Preview Access
+          Enter Passcode
         </button>
       </div>
 
     </div>
   </div>
 
-  <!-- VIP Passcode Modal -->
-  <div id="vip-passcode-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+  <!-- Passcode Modal (Code: 2721) -->
+  <div id="vip-passcode-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/85 backdrop-blur-md">
     <div class="w-full max-w-sm p-6 rounded-2xl bg-[#121218] border border-amber-500/30 text-center shadow-2xl">
-      <h3 class="font-serif text-xl text-white mb-2">Creator Verification</h3>
-      <p class="text-xs text-neutral-400 font-light mb-5">Enter passcode to review website before midnight.</p>
+      <h3 class="font-serif text-xl text-white mb-2">Private Verification</h3>
+      <p class="text-xs text-neutral-400 font-light mb-5">Please enter the security key to explore the memoirs.</p>
 
-      <input id="vip-passcode-input" type="password" placeholder="Enter code (2110)" class="w-full px-4 py-3 rounded-xl bg-black/50 border border-white/10 focus:border-amber-400 text-center text-sm font-mono tracking-widest text-amber-200 outline-none mb-3" />
+      <input id="vip-passcode-input" type="password" placeholder="Enter Passcode · · · ·" maxlength="10" class="w-full px-4 py-3 rounded-xl bg-black/50 border border-white/10 focus:border-amber-400 text-center text-sm font-mono tracking-widest text-amber-200 outline-none mb-3" />
       
       <p id="vip-pass-error" class="text-[11px] text-red-400 font-mono mb-4 hidden"></p>
 
       <div class="flex gap-2">
-        <button id="btn-submit-passcode" class="flex-1 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-black text-xs font-mono uppercase tracking-wider font-semibold transition-colors">
+        <button id="btn-submit-passcode" class="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-black text-xs font-mono uppercase tracking-wider font-semibold transition-colors">
           Verify & Enter
-        </button>
-        <button id="btn-quick-preview" class="px-4 py-2.5 rounded-xl bg-white/[0.06] hover:bg-white/10 text-neutral-300 text-xs font-mono tracking-wider transition-colors">
-          Instant Pass
         </button>
       </div>
 
@@ -142,7 +139,7 @@
   <div id="main-experience" class="relative z-10 opacity-0 pointer-events-none transition-opacity duration-1000">
 
     <!-- Floating Luxury Header Navigation -->
-    <header class="fixed top-0 inset-x-0 z-40 px-4 sm:px-8 py-4 backdrop-blur-md bg-[#08080a]/60 border-b border-white/[0.04]">
+    <header class="fixed top-0 inset-x-0 z-40 px-4 sm:px-8 py-4 backdrop-blur-md bg-[#08080a]/70 border-b border-white/[0.04]">
       <div class="max-w-7xl mx-auto flex items-center justify-between">
         
         <!-- Brand Monogram -->
@@ -157,14 +154,15 @@
 
         <!-- Desktop Nav Anchors -->
         <nav class="hidden md:flex items-center gap-8 text-[11px] font-mono tracking-[0.2em] uppercase text-neutral-400">
-          <a href="#pillars" class="hover:text-amber-300 transition-colors">01 Reflection</a>
-          <a href="#coverflow" class="hover:text-amber-300 transition-colors">02 Memoirs</a>
-          <a href="#cinema" class="hover:text-amber-300 transition-colors">03 Cinema</a>
-          <a href="#archive" class="hover:text-amber-300 transition-colors">04 Archive</a>
-          <a href="#letter" class="hover:text-amber-300 transition-colors">05 Letter</a>
+          <a href="#ceremony" class="hover:text-amber-300 transition-colors">01 Ceremony</a>
+          <a href="#dinner" class="hover:text-amber-300 transition-colors">02 Gala Dinner</a>
+          <a href="#coverflow" class="hover:text-amber-300 transition-colors">03 Memoirs</a>
+          <a href="#cinema" class="hover:text-amber-300 transition-colors">04 Cinema</a>
+          <a href="#archive" class="hover:text-amber-300 transition-colors">05 Archive</a>
+          <a href="#letter" class="hover:text-amber-300 transition-colors">06 Letter</a>
         </nav>
 
-        <!-- Ambient Sound Controller -->
+        <!-- Song / Sound Controller -->
         <button id="btn-ambient-audio" class="flex items-center gap-3 px-3.5 py-1.5 rounded-full bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-amber-400/40 transition-all text-[11px] font-mono tracking-wider text-amber-200/90">
           <div id="audio-equalizer" class="flex items-end gap-0.5 h-3 opacity-30">
             <span class="w-0.5 bg-amber-400 rounded-full h-1"></span>
@@ -172,7 +170,7 @@
             <span class="w-0.5 bg-amber-400 rounded-full h-3"></span>
             <span class="w-0.5 bg-amber-400 rounded-full h-1.5"></span>
           </div>
-          <span id="audio-status-text" class="hidden sm:inline">Ambience: Ambient</span>
+          <span id="audio-status-text" class="hidden sm:inline">Song: Play Melody</span>
         </button>
 
       </div>
@@ -202,8 +200,8 @@
           </p>
 
           <div class="pt-4 flex flex-wrap items-center gap-4 text-xs font-mono tracking-wider">
-            <a href="#coverflow" class="px-7 py-3.5 rounded-full bg-amber-500 hover:bg-amber-400 text-black font-semibold transition-all shadow-[0_10px_30px_rgba(212,175,55,0.25)] flex items-center gap-2">
-              <span>EXPLORE MEMOIRS</span>
+            <a href="#ceremony" class="px-7 py-3.5 rounded-full bg-amber-500 hover:bg-amber-400 text-black font-semibold transition-all shadow-[0_10px_30px_rgba(212,175,55,0.25)] flex items-center gap-2">
+              <span>BEGIN CEREMONY</span>
               <svg class="w-3.5 h-3.5 stroke-current stroke-[2]" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </a>
 
@@ -215,7 +213,7 @@
           <!-- Subtle Stats -->
           <div class="pt-8 grid grid-cols-3 gap-6 border-t border-white/[0.06] max-w-md">
             <div>
-              <span class="block font-mono text-xl text-amber-300 font-normal">41</span>
+              <span class="block font-mono text-xl text-amber-300 font-normal">35</span>
               <span class="block text-[10px] font-mono tracking-widest text-neutral-400 uppercase mt-0.5">Curated Frames</span>
             </div>
             <div>
@@ -236,17 +234,17 @@
             <div class="card-glare absolute inset-0 rounded-3xl pointer-events-none opacity-0 z-20"></div>
 
             <div class="relative w-full h-full rounded-2xl overflow-hidden">
-              <img src="assets/media/Snapchat-418004336.jpg" alt="Irnum" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+              <img src="assets/media/Snapchat-1043443105.jpg" alt="Irnum" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
               <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20"></div>
 
               <!-- Corner Monogram Badge -->
               <div class="absolute top-4 right-4 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-[10px] font-mono tracking-widest text-amber-200">
-                FRAME 27
+                SIGNATURE FRAME
               </div>
 
               <!-- Card Bottom Caption -->
               <div class="absolute bottom-0 inset-x-0 p-6 text-left">
-                <span class="text-[10px] font-mono tracking-[0.25em] text-amber-400 uppercase block mb-1">THE SIGNATURE FRAME</span>
+                <span class="text-[10px] font-mono tracking-[0.25em] text-amber-400 uppercase block mb-1">THE SIGNATURE PORTRAIT</span>
                 <h3 class="font-serif text-2xl text-white font-medium">Irnum</h3>
                 <p class="text-xs text-neutral-300 font-light mt-1">Poise and quiet fortitude in harmony.</p>
               </div>
@@ -258,9 +256,147 @@
     </section>
 
     <!-- ========================================== -->
+    <!-- SECTION: CAKE CUTTING & FLOATING LANTERNS  -->
+    <!-- ========================================== -->
+    <section id="ceremony" class="relative py-28 px-4 bg-[#0a0a0f] border-t border-white/[0.04] overflow-hidden">
+      <!-- Floating Lanterns Sky Canvas -->
+      <canvas id="lantern-canvas" class="absolute inset-0 pointer-events-none z-0"></canvas>
+
+      <div class="relative z-10 max-w-4xl mx-auto text-center space-y-10">
+        
+        <div class="space-y-3 max-w-xl mx-auto">
+          <span class="text-[10px] font-mono tracking-[0.3em] uppercase text-amber-400 block">The Birthday Rite · Milestone XXI</span>
+          <h2 class="font-serif text-3xl sm:text-5xl text-white font-normal">The Ceremony of Celebration</h2>
+          <p class="text-xs sm:text-sm text-neutral-400 font-light leading-relaxed">
+            Blow the flame to release twenty-one wishes into the night sky, then divide the royal cake to commence the tribute.
+          </p>
+        </div>
+
+        <!-- Interactive 3-Tier Luxury Cake Visual -->
+        <div class="relative w-full max-w-md mx-auto pt-12 pb-6 flex flex-col items-center justify-center select-none">
+          
+          <!-- Cake Knife Graphic -->
+          <div id="cake-knife-graphic" class="hidden absolute top-4 right-1/4 z-30 pointer-events-none">
+            <svg class="w-20 h-20 -rotate-45 drop-shadow-[0_10px_20px_rgba(212,175,55,0.6)]" viewBox="0 0 100 100" fill="none">
+              <path d="M10 90 L85 15 L90 20 L25 95 Z" fill="url(#knife-grad)" stroke="#d4af37" stroke-width="1.5"/>
+              <circle cx="18" cy="82" r="3" fill="#f5e6c8"/>
+              <defs>
+                <linearGradient id="knife-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#ffffff"/>
+                  <stop offset="60%" stop-color="#cbd5e1"/>
+                  <stop offset="100%" stop-color="#d4af37"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+
+          <!-- Candle & Flame -->
+          <div class="relative flex flex-col items-center mb-0 z-20">
+            <!-- Smoke (hidden initially) -->
+            <div id="cake-candle-smoke" class="hidden w-4 h-12 mb-1">
+              <svg class="w-full h-full stroke-neutral-300 stroke-[1.5]" fill="none" viewBox="0 0 24 50">
+                <path d="M12 45 Q8 30 16 20 T10 0" stroke-linecap="round"/>
+              </svg>
+            </div>
+
+            <!-- Flame -->
+            <div id="cake-candle-flame" class="candle-flame w-6 h-8 cursor-pointer transition-all duration-500 mb-1">
+              <svg class="w-full h-full" viewBox="0 0 24 32">
+                <path d="M12 0 C16 10 22 18 18 26 C15 30 9 30 6 26 C2 18 8 10 12 0 Z" fill="url(#flame-grad)"/>
+                <circle cx="12" cy="22" r="4" fill="#ffffff" opacity="0.9"/>
+                <defs>
+                  <linearGradient id="flame-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#ffffff"/>
+                    <stop offset="25%" stop-color="#fef08a"/>
+                    <stop offset="65%" stop-color="#f59e0b"/>
+                    <stop offset="100%" stop-color="#dc2626"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+
+            <!-- Candle Stick -->
+            <div class="w-3.5 h-12 bg-gradient-to-r from-amber-200 via-white to-amber-300 rounded-sm shadow-md border-x border-amber-400/40"></div>
+          </div>
+
+          <!-- Tier 3 (Top) -->
+          <div class="relative w-36 h-14 bg-gradient-to-b from-[#2a2416] via-[#1f1a10] to-[#14120d] rounded-t-xl border-t-2 border-x border-amber-400/60 shadow-lg flex items-center justify-center z-10">
+            <div class="w-full h-2 absolute top-0 bg-gradient-to-r from-amber-400 via-amber-200 to-amber-400 rounded-t-xl"></div>
+            <span class="font-cinzel text-[10px] tracking-[0.25em] text-amber-300 font-semibold uppercase">IRNUM · XXI</span>
+          </div>
+
+          <!-- Tier 2 (Middle) -->
+          <div class="relative w-56 h-16 bg-gradient-to-b from-[#18181f] via-[#101017] to-[#0c0c10] border-t-2 border-x border-amber-500/40 shadow-xl flex items-center justify-center z-0">
+            <div class="w-full h-2.5 absolute top-0 bg-gradient-to-r from-amber-500/80 via-amber-200 to-amber-500/80"></div>
+            <div class="flex gap-2">
+              <span class="w-2 h-2 rounded-full bg-amber-400/80"></span>
+              <span class="w-2 h-2 rounded-full bg-amber-400/80"></span>
+              <span class="w-2 h-2 rounded-full bg-amber-400/80"></span>
+            </div>
+          </div>
+
+          <!-- Tier 1 (Base) -->
+          <div class="relative w-80 h-20 bg-gradient-to-b from-[#14141a] via-[#0d0d12] to-[#08080a] rounded-b-2xl border-t-2 border-x border-b border-amber-500/50 shadow-2xl flex items-center justify-center">
+            <div class="w-full h-3 absolute top-0 bg-gradient-to-r from-amber-600 via-amber-300 to-amber-600 rounded-sm"></div>
+            
+            <!-- Slice Cut Seam (hidden until cut) -->
+            <div id="cake-slice-cut" class="absolute inset-y-0 w-1 bg-amber-400 shadow-[0_0_15px_#f59e0b] opacity-0 transition-all duration-700"></div>
+
+            <span class="font-serif text-xs tracking-widest text-neutral-400 uppercase">October Twenty-First · Royal Gala</span>
+          </div>
+
+          <!-- Cake Stand Plate -->
+          <div class="w-96 h-4 bg-gradient-to-r from-amber-700 via-amber-300 to-amber-700 rounded-full shadow-2xl border-t border-amber-200 mt-0.5"></div>
+
+        </div>
+
+        <!-- Status & Guidance -->
+        <div id="cake-ceremony-status" class="text-xs sm:text-sm font-mono tracking-wider text-neutral-300">
+          Step 1: Make a wish and blow out the birthday candle.
+        </div>
+
+        <!-- Interactive Ceremony Action Buttons -->
+        <div class="flex flex-wrap items-center justify-center gap-4 pt-2">
+          <button id="btn-blow-candle" class="px-6 py-3 rounded-full bg-white/[0.04] hover:bg-white/[0.1] border border-amber-400/40 hover:border-amber-400 text-xs font-mono tracking-wider text-amber-200 uppercase transition-all duration-300 flex items-center gap-2 shadow-lg">
+            <svg class="w-4 h-4 stroke-current stroke-[1.5]" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            <span>Make Wish & Blow Candle</span>
+          </button>
+
+          <button id="btn-cut-cake" class="px-7 py-3 rounded-full bg-amber-500 hover:bg-amber-400 text-black font-semibold text-xs font-mono tracking-wider uppercase opacity-40 pointer-events-none transition-all duration-300 flex items-center gap-2 shadow-[0_10px_30px_rgba(212,175,55,0.3)]">
+            <svg class="w-4 h-4 stroke-current stroke-[2]" viewBox="0 0 24 24" fill="none"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <span>Cut The Birthday Cake</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SECTION: CANDLELIT GALA DINNER             -->
+    <!-- ========================================== -->
+    <section id="dinner" class="py-24 px-4 bg-[#08080a] border-t border-white/[0.04]">
+      <div class="max-w-5xl mx-auto text-center space-y-12">
+        
+        <div class="space-y-3 max-w-xl mx-auto">
+          <span class="text-[10px] font-mono tracking-[0.3em] uppercase text-amber-400 block">The Gala Evening · Atmosphere</span>
+          <h2 class="font-serif text-3xl sm:text-5xl text-white font-normal">A Candlelit Dinner & Toast</h2>
+          <p class="text-xs sm:text-sm text-neutral-400 font-light leading-relaxed">
+            An evening curated in appreciation of shared conversations, quiet strength, and timeless companionship.
+          </p>
+        </div>
+
+        <!-- 3 Curated Dinner Courses -->
+        <div id="dinner-courses-container" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Populated from JS -->
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================== -->
     <!-- SECTION 1: REFLECTIONS & PILLARS           -->
     <!-- ========================================== -->
-    <section id="pillars" class="py-24 px-4 bg-[#08080a] border-t border-white/[0.04]">
+    <section id="pillars" class="py-24 px-4 bg-[#0a0a0f] border-t border-white/[0.04]">
       <div class="max-w-6xl mx-auto">
         
         <div class="text-center max-w-xl mx-auto mb-16 space-y-3">
@@ -281,7 +417,7 @@
     <!-- ========================================== -->
     <!-- SECTION 2: 3D COVERFLOW MEMOIRS (21st.dev) -->
     <!-- ========================================== -->
-    <section id="coverflow" class="py-24 px-4 bg-[#0a0a0f] border-t border-white/[0.04] overflow-hidden">
+    <section id="coverflow" class="py-24 px-4 bg-[#08080a] border-t border-white/[0.04] overflow-hidden">
       <div class="max-w-7xl mx-auto text-center">
         
         <div class="max-w-xl mx-auto mb-8 space-y-3">
@@ -299,20 +435,20 @@
     </section>
 
     <!-- ========================================== -->
-    <!-- SECTION 3: THE MOTION CINEMA (9 MP4 REELS) -->
+    <!-- SECTION 3: THE MOTION CINEMA (9 REELS)     -->
     <!-- ========================================== -->
-    <section id="cinema" class="py-24 px-4 bg-[#08080a] border-t border-white/[0.04]">
-      <div class="max-w-6xl mx-auto">
+    <section id="cinema" class="py-24 px-4 bg-[#0a0a0f] border-t border-white/[0.04]">
+      <div class="max-w-7xl mx-auto">
         
         <div class="text-center max-w-xl mx-auto mb-16 space-y-3">
           <span class="text-[10px] font-mono tracking-[0.3em] uppercase text-amber-400 block">Chapter III · Living Motion</span>
-          <h2 class="font-serif text-3xl sm:text-5xl text-white font-normal">The Cinema Chronicles</h2>
+          <h2 class="font-serif text-3xl sm:text-5xl text-white font-normal">Smartphone Story Reels</h2>
           <p class="text-xs sm:text-sm text-neutral-400 font-light leading-relaxed">
-            Nine video story fragments capturing spontaneous laughter and genuine moments. Hover to preview; click for theater playback.
+            Framed in vertical smartphone stories. Hover to preview video motion; click to launch full theater playback.
           </p>
         </div>
 
-        <div id="cinema-reels-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div id="cinema-reels-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           <!-- Dynamically populated from JS -->
         </div>
 
@@ -320,22 +456,22 @@
     </section>
 
     <!-- ========================================== -->
-    <!-- SECTION 4: MUSEUM BENTO ARCHIVE (41 PHOTOS)-->
+    <!-- SECTION 4: MUSEUM BENTO ARCHIVE (35 PHOTOS)-->
     <!-- ========================================== -->
-    <section id="archive" class="py-24 px-4 bg-[#0a0a0f] border-t border-white/[0.04]">
+    <section id="archive" class="py-24 px-4 bg-[#08080a] border-t border-white/[0.04]">
       <div class="max-w-7xl mx-auto">
         
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div>
             <span class="text-[10px] font-mono tracking-[0.3em] uppercase text-amber-400 block mb-2">Chapter IV · The Complete Vault</span>
             <h2 class="font-serif text-3xl sm:text-5xl text-white font-normal">Curated Frame Archive</h2>
-            <p class="text-xs sm:text-sm text-neutral-400 font-light mt-1">Forty-one preserved memories in an architectural layout.</p>
+            <p class="text-xs sm:text-sm text-neutral-400 font-light mt-1">Thirty-five preserved memories in an architectural layout.</p>
           </div>
 
           <!-- Category Filter Tabs -->
           <div class="flex flex-wrap gap-2 text-xs font-mono tracking-wider">
             <button data-filter="all" class="px-4 py-2 rounded-full bg-amber-400 text-black font-semibold border border-amber-400 transition-colors">
-              All (41)
+              All (35)
             </button>
             <button data-filter="portraits" class="px-4 py-2 rounded-full bg-white/[0.03] text-neutral-300 hover:text-white border border-white/10 transition-colors">
               Portraits
@@ -360,7 +496,7 @@
     <!-- ========================================== -->
     <!-- SECTION 5: THE SEALED ARCHIVAL LETTER      -->
     <!-- ========================================== -->
-    <section id="letter" class="py-28 px-4 bg-[#08080a] border-t border-white/[0.04]">
+    <section id="letter" class="py-28 px-4 bg-[#0a0a0f] border-t border-white/[0.04]">
       <div class="max-w-3xl mx-auto text-center">
         
         <div class="mb-12 space-y-3">
@@ -404,7 +540,7 @@
     <!-- ========================================== -->
     <!-- SECTION 6: DIGITAL GUESTBOOK CAPSULE       -->
     <!-- ========================================== -->
-    <section id="guestbook" class="py-24 px-4 bg-[#0a0a0f] border-t border-white/[0.04]">
+    <section id="guestbook" class="py-24 px-4 bg-[#08080a] border-t border-white/[0.04]">
       <div class="max-w-4xl mx-auto">
         
         <div class="text-center max-w-xl mx-auto mb-16 space-y-3">
@@ -488,16 +624,22 @@
     </button>
 
     <!-- Media Display Frame -->
-    <div class="relative max-w-4xl max-h-[85vh] flex flex-col items-center">
+    <div class="relative max-w-4xl max-h-[88vh] flex flex-col items-center">
       
-      <div class="relative max-h-[70vh] rounded-2xl overflow-hidden border border-white/10 shadow-2xl flex items-center justify-center bg-black">
-        <img id="lightbox-img" src="" alt="Irnum Memoir" class="max-h-[70vh] w-auto object-contain hidden" />
-        <video id="lightbox-video" src="" controls playsinline class="max-h-[70vh] w-auto hidden"></video>
+      <!-- Photo Display Frame -->
+      <img id="lightbox-img" src="" alt="Irnum Memoir" class="max-h-[70vh] w-auto object-contain rounded-2xl border border-white/10 shadow-2xl hidden" />
+
+      <!-- Video Mobile Screen Mockup Frame -->
+      <div id="lightbox-phone-wrapper" class="mobile-device-frame relative w-[280px] sm:w-[320px] h-[500px] sm:h-[560px] hidden">
+        <div class="mobile-device-notch">
+          <span class="mobile-camera-lens"></span>
+        </div>
+        <video id="lightbox-video" src="" controls playsinline class="w-full h-full object-cover"></video>
       </div>
 
       <!-- Captions -->
       <div class="mt-4 text-center max-w-lg space-y-1">
-        <div id="lightbox-counter" class="text-[10px] font-mono tracking-[0.25em] text-amber-400 uppercase">01 / 50</div>
+        <div id="lightbox-counter" class="text-[10px] font-mono tracking-[0.25em] text-amber-400 uppercase">01 / 35</div>
         <h4 id="lightbox-title" class="font-serif text-xl sm:text-2xl text-white font-medium">Irnum</h4>
         <p id="lightbox-desc" class="text-xs text-neutral-300 font-light"></p>
       </div>

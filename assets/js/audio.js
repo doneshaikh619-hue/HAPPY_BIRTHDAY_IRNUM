@@ -1,108 +1,63 @@
 /**
- * Luxury Ambient Soundscape Engine
- * Powered by the Web Audio API (Zero external MP3 dependencies).
- * Generates warm, subtle celestial chords and soft tactile interaction tones.
+ * Audio Engine with Dedicated Happy Birthday Instrumental MP3
+ * And Web Audio tactile sound effects.
  */
 
 export class AmbientAudioEngine {
   constructor() {
-    this.ctx = null;
+    this.audio = new Audio("assets/audio/happy-birthday-instrumental.mp3");
+    this.audio.loop = true;
+    this.audio.volume = 0.55;
     this.isPlaying = false;
-    this.ambientInterval = null;
-    this.masterGain = null;
-    this.chords = [
-      // Frequencies in Hz for warm pentatonic ambient chords (Db / Ab / Eb serene luxury tuning)
-      [138.59, 207.65, 277.18, 329.63, 415.30], // DbMaj9
-      [155.56, 233.08, 277.18, 349.23, 466.16], // Ebm9
-      [174.61, 261.63, 329.63, 392.00, 523.25], // F minor 7
-      [116.54, 174.61, 233.08, 277.18, 349.23]  // Bbm7
-    ];
-    this.currentChordIndex = 0;
+    this.ctx = null;
   }
 
-  init() {
+  initCtx() {
     if (this.ctx) return;
     const AudioContext = window.AudioContext || window.webkitAudioContext;
-    if (!AudioContext) return;
-    this.ctx = new AudioContext();
-    this.masterGain = this.ctx.createGain();
-    this.masterGain.gain.setValueAtTime(0.18, this.ctx.currentTime);
-    this.masterGain.connect(this.ctx.destination);
+    if (AudioContext) {
+      this.ctx = new AudioContext();
+    }
   }
 
   toggle() {
-    if (!this.ctx) this.init();
-    if (this.ctx.state === "suspended") {
+    this.initCtx();
+    if (this.ctx && this.ctx.state === "suspended") {
       this.ctx.resume();
     }
 
     if (this.isPlaying) {
-      this.stop();
+      this.pause();
     } else {
-      this.start();
+      this.play();
     }
     return this.isPlaying;
   }
 
-  start() {
-    if (!this.ctx) this.init();
-    this.isPlaying = true;
-    this.playAmbientCycle();
-    this.ambientInterval = setInterval(() => {
-      this.playAmbientCycle();
-    }, 4200);
-  }
-
-  stop() {
-    this.isPlaying = false;
-    if (this.ambientInterval) {
-      clearInterval(this.ambientInterval);
-      this.ambientInterval = null;
+  play() {
+    this.initCtx();
+    if (this.ctx && this.ctx.state === "suspended") {
+      this.ctx.resume();
     }
-  }
 
-  playAmbientCycle() {
-    if (!this.ctx || !this.isPlaying) return;
-    const chord = this.chords[this.currentChordIndex % this.chords.length];
-    this.currentChordIndex++;
-
-    const now = this.ctx.currentTime;
-    const filter = this.ctx.createBiquadFilter();
-    filter.type = "lowpass";
-    filter.frequency.setValueAtTime(800, now);
-    filter.frequency.exponentialRampToValueAtTime(350, now + 4.0);
-    filter.connect(this.masterGain);
-
-    chord.forEach((freq, idx) => {
-      const osc = this.ctx.createOscillator();
-      const gain = this.ctx.createGain();
-
-      osc.type = idx % 2 === 0 ? "sine" : "triangle";
-      osc.frequency.setValueAtTime(freq, now);
-
-      // Micro detune for celestial warmth
-      osc.detune.setValueAtTime((idx - 2) * 4, now);
-
-      const delay = idx * 0.12;
-      const startTime = now + delay;
-      const duration = 3.8;
-
-      gain.gain.setValueAtTime(0.0001, startTime);
-      gain.gain.exponentialRampToValueAtTime(0.06, startTime + 0.6);
-      gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
-
-      osc.connect(gain);
-      gain.connect(filter);
-
-      osc.start(startTime);
-      osc.stop(startTime + duration + 0.1);
+    this.audio.play().then(() => {
+      this.isPlaying = true;
+    }).catch((err) => {
+      console.warn("Audio play prevented until user interaction:", err);
+      this.isPlaying = false;
     });
   }
 
-  // Micro haptic interaction clicks
+  pause() {
+    this.audio.pause();
+    this.isPlaying = false;
+  }
+
   playClick() {
+    this.initCtx();
     if (!this.ctx) return;
     if (this.ctx.state === "suspended") this.ctx.resume();
+
     const now = this.ctx.currentTime;
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
@@ -121,22 +76,53 @@ export class AmbientAudioEngine {
   }
 
   playChime() {
+    this.initCtx();
     if (!this.ctx) return;
     if (this.ctx.state === "suspended") this.ctx.resume();
+
     const now = this.ctx.currentTime;
-    [1046.50, 1318.51, 1567.98].forEach((f, i) => {
+    [1046.50, 1318.51, 1567.98, 2093.00].forEach((f, i) => {
       const osc = this.ctx.createOscillator();
       const gain = this.ctx.createGain();
       osc.type = "sine";
-      osc.frequency.setValueAtTime(f, now + i * 0.08);
+      osc.frequency.setValueAtTime(f, now + i * 0.07);
 
-      gain.gain.setValueAtTime(0.03, now + i * 0.08);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + i * 0.08 + 0.8);
+      gain.gain.setValueAtTime(0.04, now + i * 0.07);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + i * 0.07 + 0.9);
 
       osc.connect(gain);
       gain.connect(this.ctx.destination);
-      osc.start(now + i * 0.08);
-      osc.stop(now + i * 0.08 + 0.9);
+      osc.start(now + i * 0.07);
+      osc.stop(now + i * 0.07 + 1.0);
     });
+  }
+
+  playWindBlow() {
+    this.initCtx();
+    if (!this.ctx) return;
+    if (this.ctx.state === "suspended") this.ctx.resume();
+
+    // Gentle soft breath / wind whoosh when blowing candle
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    const filter = this.ctx.createBiquadFilter();
+
+    osc.type = "triangle";
+    osc.frequency.setValueAtTime(160, now);
+    osc.frequency.exponentialRampToValueAtTime(60, now + 0.5);
+
+    filter.type = "lowpass";
+    filter.frequency.setValueAtTime(400, now);
+
+    gain.gain.setValueAtTime(0.06, now);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.55);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 0.6);
   }
 }

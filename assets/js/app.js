@@ -9,6 +9,7 @@ import { Gatekeeper } from "./countdown.js";
 import { AmbientAudioEngine } from "./audio.js";
 import { CoverflowSlider } from "./slider.js";
 import { init3DTilt } from "./tilt.js";
+import { CakeCeremony } from "./cake-ceremony.js";
 
 // Global Audio Engine Instance
 const audioEngine = new AmbientAudioEngine();
@@ -47,7 +48,7 @@ class StardustGalaxy {
         speedX: (Math.random() - 0.5) * 0.4,
         speedY: (Math.random() - 0.5) * 0.4,
         alpha: Math.random() * 0.6 + 0.2,
-        color: Math.random() > 0.4 ? "212, 175, 55" : "245, 230, 200" // Gold and Champagne
+        color: Math.random() > 0.4 ? "212, 175, 55" : "245, 230, 200"
       });
     }
   }
@@ -118,7 +119,6 @@ class StardustGalaxy {
         if (p.y < 0) p.y = this.height;
         if (p.y > this.height) p.y = 0;
 
-        // Subtle mouse repulsion
         const dx = this.mouse.x - p.x;
         const dy = this.mouse.y - p.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
@@ -147,6 +147,7 @@ class LightboxManager {
     this.modal = document.getElementById("media-lightbox");
     this.imageEl = document.getElementById("lightbox-img");
     this.videoEl = document.getElementById("lightbox-video");
+    this.phoneWrapper = document.getElementById("lightbox-phone-wrapper");
     this.titleEl = document.getElementById("lightbox-title");
     this.descEl = document.getElementById("lightbox-desc");
     this.counterEl = document.getElementById("lightbox-counter");
@@ -221,18 +222,22 @@ class LightboxManager {
 
     if (isVideo) {
       this.imageEl.classList.add("hidden");
-      this.videoEl.classList.remove("hidden");
+      this.phoneWrapper.classList.remove("hidden");
       this.videoEl.src = `assets/media/${item.file}`;
+      this.videoEl.load();
       this.videoEl.play().catch(() => {});
     } else {
-      this.videoEl.classList.add("hidden");
-      this.videoEl.pause();
+      this.phoneWrapper.classList.add("hidden");
+      if (this.videoEl) {
+        this.videoEl.pause();
+        this.videoEl.src = "";
+      }
       this.imageEl.classList.remove("hidden");
       this.imageEl.src = `assets/media/${item.file}`;
     }
 
     if (this.titleEl) this.titleEl.textContent = item.title || "Irnum — Archive Frame";
-    if (this.descEl) this.descEl.textContent = item.caption || item.note || `Frame archive sequence #${this.currentIndex + 1}`;
+    if (this.descEl) this.descEl.textContent = item.caption || item.note || `Frame sequence #${this.currentIndex + 1}`;
     if (this.counterEl) {
       this.counterEl.textContent = `${String(this.currentIndex + 1).padStart(2, "0")} / ${String(this.currentList.length).padStart(2, "0")}`;
     }
@@ -244,7 +249,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const galaxy = new StardustGalaxy("stardust-canvas");
   window.triggerGoldenBurst = () => {
     galaxy.burst();
-    audioEngine.playChime();
   };
 
   const lightbox = new LightboxManager();
@@ -261,27 +265,37 @@ document.addEventListener("DOMContentLoaded", () => {
   const audioWaves = document.getElementById("audio-equalizer");
   const audioStatusText = document.getElementById("audio-status-text");
 
+  const updateAudioUI = (isPlaying) => {
+    if (isPlaying) {
+      audioWaves.classList.remove("opacity-30");
+      audioWaves.classList.add("equalizer-active");
+      if (audioStatusText) audioStatusText.textContent = "Song: Playing";
+    } else {
+      audioWaves.classList.add("opacity-30");
+      audioWaves.classList.remove("equalizer-active");
+      if (audioStatusText) audioStatusText.textContent = "Song: Paused";
+    }
+  };
+
   if (audioBtn) {
     audioBtn.addEventListener("click", () => {
       const isPlaying = audioEngine.toggle();
-      if (isPlaying) {
-        audioWaves.classList.remove("opacity-30");
-        audioWaves.classList.add("equalizer-active");
-        if (audioStatusText) audioStatusText.textContent = "Ambience: Resonant";
-      } else {
-        audioWaves.classList.add("opacity-30");
-        audioWaves.classList.remove("equalizer-active");
-        if (audioStatusText) audioStatusText.textContent = "Ambience: Paused";
-      }
+      updateAudioUI(isPlaying);
     });
   }
 
+  // Update audio UI on audio element events
+  audioEngine.audio.addEventListener("play", () => updateAudioUI(true));
+  audioEngine.audio.addEventListener("pause", () => updateAudioUI(false));
+
   function initExperience() {
+    new CakeCeremony(audioEngine);
     renderPillars();
     renderCoverflowSlider();
     renderCinemaReels();
     renderBentoArchive();
     renderArchivalLetter();
+    renderDinnerMenu();
     renderGuestbook();
     init3DTilt();
     setupSmoothScroll();
@@ -319,56 +333,104 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 3. Cinema Video Reels
+  // 3. Cinema Video Reels inside Luxury Smartphone Frames
   function renderCinemaReels() {
     const container = document.getElementById("cinema-reels-grid");
     if (!container) return;
 
     container.innerHTML = MEDIA_COLLECTIONS.videoStories.map((reel, idx) => `
-      <div class="tilt-card group relative h-[380px] rounded-2xl overflow-hidden bg-[#121217] border border-white/[0.08] hover:border-amber-500/40 cursor-pointer shadow-xl transition-all duration-500" data-reel-index="${idx}">
-        <div class="card-glare absolute inset-0 pointer-events-none opacity-0 z-20"></div>
-
-        <video src="assets/media/${reel.file}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loop muted playsinline preload="metadata"></video>
-        
-        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/10 z-10"></div>
-
-        <!-- Reel Tag -->
-        <div class="absolute top-4 left-4 z-20 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-[10px] font-mono tracking-widest text-amber-300/90 uppercase">
-          ${reel.duration}
-        </div>
-
-        <!-- Play Glyph Button -->
-        <div class="absolute inset-0 z-20 flex items-center justify-center">
-          <div class="w-14 h-14 rounded-full bg-black/50 backdrop-blur-md border border-amber-400/40 flex items-center justify-center text-amber-200 group-hover:scale-110 group-hover:bg-amber-500 group-hover:text-black transition-all duration-300 shadow-lg">
-            <svg class="w-6 h-6 fill-current translate-x-0.5" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      <div class="flex justify-center">
+        <!-- Mobile Device Frame -->
+        <div class="mobile-device-frame relative w-[280px] h-[500px] cursor-pointer group transition-all duration-500 hover:scale-[1.02]" data-reel-index="${idx}">
+          
+          <!-- Notch -->
+          <div class="mobile-device-notch">
+            <span class="mobile-camera-lens"></span>
           </div>
-        </div>
 
-        <!-- Meta -->
-        <div class="absolute bottom-0 inset-x-0 p-5 z-20 text-left">
-          <span class="text-[10px] font-mono tracking-[0.2em] text-amber-400 uppercase block mb-1">${reel.tag}</span>
-          <h4 class="font-serif text-lg text-white font-medium mb-1">${reel.title}</h4>
-          <p class="text-xs text-neutral-300 line-clamp-1 font-light">${reel.note}</p>
+          <!-- Video Progress Bar (Story style) -->
+          <div class="absolute top-2 inset-x-4 z-30 flex gap-1">
+            <div class="h-0.5 flex-1 bg-white/40 rounded-full overflow-hidden">
+              <div class="story-progress-bar h-full bg-amber-400 w-0 transition-all duration-300"></div>
+            </div>
+          </div>
+
+          <!-- Transcoded H.264 Video Player -->
+          <video src="assets/media/${reel.file}" class="w-full h-full object-cover" loop muted playsinline preload="metadata"></video>
+          
+          <!-- Ambient Overlay -->
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-black/30 pointer-events-none z-10"></div>
+
+          <!-- Play Glyph Center -->
+          <div class="play-overlay absolute inset-0 z-20 flex items-center justify-center pointer-events-none group-hover:opacity-0 transition-opacity">
+            <div class="w-14 h-14 rounded-full bg-black/60 backdrop-blur-md border border-amber-400/40 flex items-center justify-center text-amber-200 shadow-xl">
+              <svg class="w-6 h-6 fill-current translate-x-0.5" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            </div>
+          </div>
+
+          <!-- Unmute/Mute Toggle Button -->
+          <button class="btn-reel-unmute absolute top-10 right-4 z-30 p-2 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white hover:text-amber-300 transition-colors">
+            <svg class="icon-muted w-4 h-4 stroke-current stroke-[1.5]" viewBox="0 0 24 24" fill="none"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+            <svg class="icon-unmuted w-4 h-4 stroke-current stroke-[1.5] hidden" viewBox="0 0 24 24" fill="none"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+          </button>
+
+          <!-- Bottom Story Meta -->
+          <div class="absolute bottom-0 inset-x-0 p-5 z-20 text-left">
+            <div class="flex items-center gap-2 mb-1">
+              <span class="text-[9px] font-mono tracking-[0.2em] text-amber-400 uppercase">${reel.duration}</span>
+              <span class="w-1 h-1 rounded-full bg-white/40"></span>
+              <span class="text-[9px] font-mono text-neutral-400 uppercase">${reel.tag}</span>
+            </div>
+            <h4 class="font-serif text-lg text-white font-medium mb-1">${reel.title}</h4>
+            <p class="text-xs text-neutral-300 font-light line-clamp-1">${reel.note}</p>
+          </div>
+
         </div>
       </div>
     `).join("");
 
-    // Video hover play previews
+    // Video play/pause on hover & sound toggle
     const videoCards = container.querySelectorAll("[data-reel-index]");
     videoCards.forEach((card) => {
       const video = card.querySelector("video");
+      const unmuteBtn = card.querySelector(".btn-reel-unmute");
+      const iconMuted = card.querySelector(".icon-muted");
+      const iconUnmuted = card.querySelector(".icon-unmuted");
+      const progressBar = card.querySelector(".story-progress-bar");
       const idx = parseInt(card.dataset.reelIndex, 10);
 
-      card.addEventListener("mouseenter", () => {
-        if (video) video.play().catch(() => {});
-      });
+      if (video) {
+        card.addEventListener("mouseenter", () => {
+          video.play().catch(() => {});
+        });
 
-      card.addEventListener("mouseleave", () => {
-        if (video) {
+        card.addEventListener("mouseleave", () => {
           video.pause();
           video.currentTime = 0;
-        }
-      });
+          if (progressBar) progressBar.style.width = "0%";
+        });
+
+        video.addEventListener("timeupdate", () => {
+          if (progressBar && video.duration) {
+            const percent = (video.currentTime / video.duration) * 100;
+            progressBar.style.width = `${percent}%`;
+          }
+        });
+      }
+
+      if (unmuteBtn && video) {
+        unmuteBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          video.muted = !video.muted;
+          if (video.muted) {
+            iconMuted.classList.remove("hidden");
+            iconUnmuted.classList.add("hidden");
+          } else {
+            iconMuted.classList.add("hidden");
+            iconUnmuted.classList.remove("hidden");
+          }
+        });
+      }
 
       card.addEventListener("click", () => {
         lightbox.open(MEDIA_COLLECTIONS.videoStories, idx);
@@ -376,7 +438,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 4. Museum Bento Grid (All 41 Photos)
+  // 4. Museum Bento Grid (35 Photos)
   function renderBentoArchive() {
     const grid = document.getElementById("bento-archive-grid");
     const filterBtns = document.querySelectorAll("[data-filter]");
@@ -409,7 +471,6 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
       }).join("");
 
-      // Rebind click to lightbox
       const cards = grid.querySelectorAll("[data-photo-index]");
       cards.forEach((card, idx) => {
         card.addEventListener("click", () => {
@@ -438,7 +499,21 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 5. The Archival Letter with Wax Seal
+  // 5. Candlelit Gala Dinner
+  function renderDinnerMenu() {
+    const container = document.getElementById("dinner-courses-container");
+    if (!container) return;
+
+    container.innerHTML = MEMOIR_TEXTS.dinnerMenu.map((item, idx) => `
+      <div class="p-6 rounded-2xl bg-white/[0.02] border border-amber-500/20 backdrop-blur-md text-left space-y-2 hover:border-amber-400/40 transition-colors">
+        <span class="text-[10px] font-mono tracking-[0.25em] text-amber-400 uppercase block">${item.course}</span>
+        <h4 class="font-serif text-xl text-white font-medium">${item.title}</h4>
+        <p class="text-xs sm:text-sm text-neutral-300 font-light leading-relaxed">${item.desc}</p>
+      </div>
+    `).join("");
+  }
+
+  // 6. Archival Letter
   function renderArchivalLetter() {
     const sealBtn = document.getElementById("wax-seal-button");
     const letterBody = document.getElementById("archival-letter-body");
@@ -447,7 +522,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!sealBtn || !letterContainer) return;
 
-    // Render paragraphs
     letterContainer.innerHTML = `
       <div class="space-y-6 text-neutral-200 font-light leading-relaxed text-sm sm:text-base tracking-wide font-sans">
         <p class="font-serif text-xl sm:text-2xl text-amber-200/90 italic font-normal">${MEMOIR_TEXTS.letter.recipient}</p>
@@ -473,14 +547,14 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 6. Guestbook / Memory Capsule
+  // 7. Guestbook
   function renderGuestbook() {
     const form = document.getElementById("guestbook-form");
     const inputName = document.getElementById("guestbook-name");
     const inputMsg = document.getElementById("guestbook-msg");
     const entriesList = document.getElementById("guestbook-entries");
 
-    const STORAGE_KEY = "irnum_guestbook_notes";
+    const STORAGE_KEY = "irnum_guestbook_notes_2721";
 
     const loadNotes = () => {
       const stored = localStorage.getItem(STORAGE_KEY);

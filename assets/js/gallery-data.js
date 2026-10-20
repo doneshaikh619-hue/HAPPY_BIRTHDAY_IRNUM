@@ -1,6 +1,6 @@
 /**
  * Gallery & Memoirs Data Manifest for Irnum's Birthday
- * Curated from user's media archive.
+ * Updated with exact remaining files from cocomo archive.
  * Strictly zero emojis. Luxury editorial tone.
  */
 
@@ -9,7 +9,7 @@ export const MEDIA_COLLECTIONS = {
   showcaseCards: [
     {
       id: "sc-1",
-      file: "Snapchat-418004336.jpg",
+      file: "Snapchat-1043443105.jpg",
       title: "Presence & Poise",
       subtitle: "The Signature Portrait",
       chapter: "I",
@@ -17,15 +17,15 @@ export const MEDIA_COLLECTIONS = {
     },
     {
       id: "sc-2",
-      file: "Snapchat-1043443105.jpg",
-      title: "Quiet Confidence",
+      file: "Snapchat-296382041.jpg",
+      title: "The Sovereign Look",
       subtitle: "Reflections in Light",
       chapter: "II",
       caption: "Serenity amidst momentum—a calm that stays grounded through every season."
     },
     {
       id: "sc-3",
-      file: "Snapchat-1114385438.jpg",
+      file: "Snapchat-1313833823.jpg",
       title: "Radiant Demeanor",
       subtitle: "The Candid Aura",
       chapter: "III",
@@ -33,7 +33,7 @@ export const MEDIA_COLLECTIONS = {
     },
     {
       id: "sc-4",
-      file: "Snapchat-1751309686.jpg",
+      file: "Snapchat-398199783.jpg",
       title: "Unwavering Focus",
       subtitle: "Depth of Character",
       chapter: "IV",
@@ -41,7 +41,7 @@ export const MEDIA_COLLECTIONS = {
     },
     {
       id: "sc-5",
-      file: "Snapchat-296382041.jpg",
+      file: "Snapchat-1931212854.jpg",
       title: "Golden Hour Glow",
       subtitle: "Timeless Silhouette",
       chapter: "V",
@@ -49,7 +49,7 @@ export const MEDIA_COLLECTIONS = {
     },
     {
       id: "sc-6",
-      file: "Snapchat-1327118024.jpg",
+      file: "Snapchat-512024531.jpg",
       title: "Gentle Distinction",
       subtitle: "A Natural Allure",
       chapter: "VI",
@@ -57,7 +57,7 @@ export const MEDIA_COLLECTIONS = {
     },
     {
       id: "sc-7",
-      file: "Snapchat-1313833823.jpg",
+      file: "Snapchat-734529422.jpg",
       title: "Subtle Elegance",
       subtitle: "Classic Harmony",
       chapter: "VII",
@@ -65,7 +65,7 @@ export const MEDIA_COLLECTIONS = {
     },
     {
       id: "sc-8",
-      file: "Snapchat-296497874.jpg",
+      file: "Snapchat-816708140.jpg",
       title: "Luminous Perspective",
       subtitle: "Memoir Chapter",
       chapter: "VIII",
@@ -73,7 +73,7 @@ export const MEDIA_COLLECTIONS = {
     }
   ],
 
-  // All 9 Video stories / motion reels
+  // All 9 Video stories / motion reels (Transcoded to web-compatible H.264)
   videoStories: [
     {
       id: "v-1",
@@ -149,49 +149,43 @@ export const MEDIA_COLLECTIONS = {
     }
   ],
 
-  // Complete 41 Archive Photos with metadata
+  // Complete 35 Archive Photos currently existing in cocomo
   allPhotos: [
     { file: "Snapchat-1002138181.jpg", title: "Quiet Reverie", category: "candid", tag: "Frame 01" },
     { file: "Snapchat-1043443105.jpg", title: "The Portrait in Gold", category: "portraits", tag: "Frame 02" },
-    { file: "Snapchat-1114385438.jpg", title: "Radiant Calm", category: "portraits", tag: "Frame 03" },
-    { file: "Snapchat-1177375271.jpg", title: "City Light Accent", category: "candid", tag: "Frame 04" },
-    { file: "Snapchat-1181915052.jpg", title: "Soft Daylight", category: "aesthetics", tag: "Frame 05" },
-    { file: "Snapchat-1313833823.jpg", title: "Classic Stance", category: "portraits", tag: "Frame 06" },
-    { file: "Snapchat-1327118024.jpg", title: "Effortless Silhouette", category: "portraits", tag: "Frame 07" },
-    { file: "Snapchat-1347936414.jpg", title: "Warm Reflection", category: "candid", tag: "Frame 08" },
-    { file: "Snapchat-1540257911.jpg", title: "Gentle Expression", category: "aesthetics", tag: "Frame 09" },
-    { file: "Snapchat-1701120266.jpg", title: "Introspective Gaze", category: "portraits", tag: "Frame 10" },
-    { file: "Snapchat-1751309686.jpg", title: "Noble Composure", category: "portraits", tag: "Frame 11" },
-    { file: "Snapchat-1827589386.jpg", title: "Autumn Warmth", category: "aesthetics", tag: "Frame 12" },
-    { file: "Snapchat-1852535573.jpg", title: "Fleeting Sparkle", category: "candid", tag: "Frame 13" },
-    { file: "Snapchat-185868301.jpg", title: "Elegance Unadorned", category: "portraits", tag: "Frame 14" },
-    { file: "Snapchat-1876888642.jpg", title: "Pure Demeanor", category: "candid", tag: "Frame 15" },
-    { file: "Snapchat-1884979807.jpg", title: "Serene Contrast", category: "aesthetics", tag: "Frame 16" },
-    { file: "Snapchat-1931028443.jpg", title: "The Subtle Charm", category: "candid", tag: "Frame 17" },
-    { file: "Snapchat-1931212854.jpg", title: "Poised & Present", category: "portraits", tag: "Frame 18" },
-    { file: "Snapchat-1951408210.jpg", title: "Gentle Morning", category: "aesthetics", tag: "Frame 19" },
-    { file: "Snapchat-2048762857.jpg", title: "Unspoken Grace", category: "candid", tag: "Frame 20" },
-    { file: "Snapchat-2063596698.jpg", title: "Dusk Reflections", category: "aesthetics", tag: "Frame 21" },
-    { file: "Snapchat-296382041.jpg", title: "The Sovereign Look", category: "portraits", tag: "Frame 22" },
-    { file: "Snapchat-296497874.jpg", title: "Luminous Horizon", category: "portraits", tag: "Frame 23" },
-    { file: "Snapchat-320576704.jpg", title: "Quiet Radiance", category: "candid", tag: "Frame 24" },
-    { file: "Snapchat-377137682.jpg", title: "Chic Silhouette", category: "aesthetics", tag: "Frame 25" },
-    { file: "Snapchat-398199783.jpg", title: "Graceful Rhythm", category: "portraits", tag: "Frame 26" },
-    { file: "Snapchat-418004336.jpg", title: "The Masterpiece Frame", category: "portraits", tag: "Frame 27" },
-    { file: "Snapchat-419591114.jpg", title: "Velvet Hue", category: "aesthetics", tag: "Frame 28" },
-    { file: "Snapchat-462066850.jpg", title: "The Candid Smile", category: "candid", tag: "Frame 29" },
-    { file: "Snapchat-491893114.jpg", title: "Delicate Simplicity", category: "aesthetics", tag: "Frame 30" },
-    { file: "Snapchat-507481694.jpg", title: "Intimate Whisper", category: "candid", tag: "Frame 31" },
-    { file: "Snapchat-512024531.jpg", title: "Resolute Spirit", category: "portraits", tag: "Frame 32" },
-    { file: "Snapchat-547580111.jpg", title: "Ethereal Presence", category: "portraits", tag: "Frame 33" },
-    { file: "Snapchat-729453618.jpg", title: "Artful Glance", category: "candid", tag: "Frame 34" },
-    { file: "Snapchat-734529422.jpg", title: "Sublime Confidence", category: "portraits", tag: "Frame 35" },
-    { file: "Snapchat-739927097.jpg", title: "Golden Silhouette", category: "aesthetics", tag: "Frame 36" },
-    { file: "Snapchat-745139993.jpg", title: "Midnight Poise", category: "portraits", tag: "Frame 37" },
-    { file: "Snapchat-816708140.jpg", title: "Unwavering Composure", category: "portraits", tag: "Frame 38" },
-    { file: "Snapchat-825534851.jpg", title: "Warmth of Spirit", category: "candid", tag: "Frame 39" },
-    { file: "Snapchat-828018777.jpg", title: "Harmonious Light", category: "aesthetics", tag: "Frame 40" },
-    { file: "Snapchat-895982523.jpg", title: "The Timeless Memoir", category: "portraits", tag: "Frame 41" }
+    { file: "Snapchat-1177375271.jpg", title: "City Light Accent", category: "candid", tag: "Frame 03" },
+    { file: "Snapchat-1181915052.jpg", title: "Soft Daylight", category: "aesthetics", tag: "Frame 04" },
+    { file: "Snapchat-1313833823.jpg", title: "Classic Stance", category: "portraits", tag: "Frame 05" },
+    { file: "Snapchat-1540257911.jpg", title: "Gentle Expression", category: "aesthetics", tag: "Frame 06" },
+    { file: "Snapchat-1701120266.jpg", title: "Introspective Gaze", category: "portraits", tag: "Frame 07" },
+    { file: "Snapchat-1827589386.jpg", title: "Autumn Warmth", category: "aesthetics", tag: "Frame 08" },
+    { file: "Snapchat-1852535573.jpg", title: "Fleeting Sparkle", category: "candid", tag: "Frame 09" },
+    { file: "Snapchat-185868301.jpg", title: "Elegance Unadorned", category: "portraits", tag: "Frame 10" },
+    { file: "Snapchat-1876888642.jpg", title: "Pure Demeanor", category: "candid", tag: "Frame 11" },
+    { file: "Snapchat-1884979807.jpg", title: "Serene Contrast", category: "aesthetics", tag: "Frame 12" },
+    { file: "Snapchat-1931028443.jpg", title: "The Subtle Charm", category: "candid", tag: "Frame 13" },
+    { file: "Snapchat-1931212854.jpg", title: "Poised & Present", category: "portraits", tag: "Frame 14" },
+    { file: "Snapchat-1951408210.jpg", title: "Gentle Morning", category: "aesthetics", tag: "Frame 15" },
+    { file: "Snapchat-2048762857.jpg", title: "Unspoken Grace", category: "candid", tag: "Frame 16" },
+    { file: "Snapchat-2063596698.jpg", title: "Dusk Reflections", category: "aesthetics", tag: "Frame 17" },
+    { file: "Snapchat-296382041.jpg", title: "The Sovereign Look", category: "portraits", tag: "Frame 18" },
+    { file: "Snapchat-320576704.jpg", title: "Quiet Radiance", category: "candid", tag: "Frame 19" },
+    { file: "Snapchat-377137682.jpg", title: "Chic Silhouette", category: "aesthetics", tag: "Frame 20" },
+    { file: "Snapchat-398199783.jpg", title: "Graceful Rhythm", category: "portraits", tag: "Frame 21" },
+    { file: "Snapchat-419591114.jpg", title: "Velvet Hue", category: "aesthetics", tag: "Frame 22" },
+    { file: "Snapchat-462066850.jpg", title: "The Candid Smile", category: "candid", tag: "Frame 23" },
+    { file: "Snapchat-491893114.jpg", title: "Delicate Simplicity", category: "aesthetics", tag: "Frame 24" },
+    { file: "Snapchat-507481694.jpg", title: "Intimate Whisper", category: "candid", tag: "Frame 25" },
+    { file: "Snapchat-512024531.jpg", title: "Resolute Spirit", category: "portraits", tag: "Frame 26" },
+    { file: "Snapchat-547580111.jpg", title: "Ethereal Presence", category: "portraits", tag: "Frame 27" },
+    { file: "Snapchat-729453618.jpg", title: "Artful Glance", category: "candid", tag: "Frame 28" },
+    { file: "Snapchat-734529422.jpg", title: "Sublime Confidence", category: "portraits", tag: "Frame 29" },
+    { file: "Snapchat-739927097.jpg", title: "Golden Silhouette", category: "aesthetics", tag: "Frame 30" },
+    { file: "Snapchat-745139993.jpg", title: "Midnight Poise", category: "portraits", tag: "Frame 31" },
+    { file: "Snapchat-816708140.jpg", title: "Unwavering Composure", category: "portraits", tag: "Frame 32" },
+    { file: "Snapchat-825534851.jpg", title: "Warmth of Spirit", category: "candid", tag: "Frame 33" },
+    { file: "Snapchat-828018777.jpg", title: "Harmonious Light", category: "aesthetics", tag: "Frame 34" },
+    { file: "Snapchat-895982523.jpg", title: "The Timeless Memoir", category: "portraits", tag: "Frame 35" }
   ]
 };
 
@@ -219,6 +213,24 @@ export const MEMOIR_TEXTS = {
       num: "03",
       title: "Rare Authenticity",
       desc: "In an era of fleeting trends and curated facades, finding someone genuinely real is an anomaly. Your perspective, sincerity, and warmth make your friendship one of the rarest gifts in this life."
+    }
+  ],
+
+  dinnerMenu: [
+    {
+      course: "FIRST TOAST",
+      title: "The Vintage of Loyalty",
+      desc: "A crystal flute raised to the enduring quality of a bond tested by time and strengthened by truth."
+    },
+    {
+      course: "THE CONVERSATION",
+      title: "Words Beyond Pretense",
+      desc: "Evenings where time recedes, marked by deep dialogue, honest laughter, and mutual reverence."
+    },
+    {
+      course: "THE HORIZON",
+      title: "The Path Ahead",
+      desc: "A table laid for coming triumphs, serene clarity, and milestones that mirror your remarkable standard."
     }
   ],
 
