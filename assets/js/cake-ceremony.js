@@ -5,7 +5,7 @@
  * Strictly zero emojis.
  */
 
-import { ThreeCakeCeremony } from "./three-cake.js?v=20261020_5";
+import { ThreeCakeCeremony } from "./three-cake.js?v=20261020_6";
 
 export class CakeCeremony {
   constructor(audioEngine) {

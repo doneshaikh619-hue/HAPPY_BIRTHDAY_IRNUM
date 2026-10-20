@@ -1,16 +1,15 @@
 /**
  * Date Lock & High-Precision Countdown Controller
- * Restricts access until October 21st, 2026.
- * Passcode for Irnum & Creator: 2721.
+ * Strict time lock: Restricts access until 21 October 2026 at 00:00:00.
+ * Automatically unlocks when the countdown reaches zero.
+ * Strictly zero emojis.
  */
 
-export const TARGET_DATE = new Date(2026, 9, 21, 0, 0, 0); // October 21, 2026 Local Time
+export const TARGET_DATE = new Date(2026, 9, 21, 0, 0, 0); // 21 October 2026 · 00:00:00 Local Time
 
 export class Gatekeeper {
   constructor(options = {}) {
     this.targetDate = options.targetDate || TARGET_DATE;
-    this.passcode = "2721"; // Explicit secret code
-    this.storageKey = "irnum_tribute_unlocked_2721";
     this.onUnlockCallback = options.onUnlock || (() => {});
     this.isUnlocked = false;
     this.timerInterval = null;
@@ -26,16 +25,14 @@ export class Gatekeeper {
     this.minutesEl = document.getElementById("cd-minutes");
     this.secondsEl = document.getElementById("cd-seconds");
     
-    const storedUnlock = sessionStorage.getItem(this.storageKey);
     const now = new Date();
 
-    if (storedUnlock === "true" || now >= this.targetDate) {
+    if (now >= this.targetDate) {
       this.instantUnlock();
       return;
     }
 
     this.startCountdown();
-    this.setupBypassControls();
   }
 
   startCountdown() {
@@ -51,7 +48,7 @@ export class Gatekeeper {
 
     if (diff <= 0) {
       clearInterval(this.timerInterval);
-      this.triggerUnlockAnimation(true);
+      this.triggerUnlockAnimation();
       return;
     }
 
@@ -76,63 +73,6 @@ export class Gatekeeper {
     }
   }
 
-  setupBypassControls() {
-    const bypassBtn = document.getElementById("btn-vip-bypass");
-    const bypassModal = document.getElementById("vip-passcode-modal");
-    const closeBypassBtn = document.getElementById("btn-close-vip");
-    const submitPassBtn = document.getElementById("btn-submit-passcode");
-    const passInput = document.getElementById("vip-passcode-input");
-    const passError = document.getElementById("vip-pass-error");
-
-    if (bypassBtn && bypassModal) {
-      bypassBtn.addEventListener("click", () => {
-        bypassModal.classList.remove("hidden");
-        bypassModal.classList.add("flex");
-        if (passInput) {
-          passInput.value = "";
-          passInput.focus();
-        }
-      });
-    }
-
-    if (closeBypassBtn && bypassModal) {
-      closeBypassBtn.addEventListener("click", () => {
-        bypassModal.classList.add("hidden");
-        bypassModal.classList.remove("flex");
-        if (passError) passError.classList.add("hidden");
-      });
-    }
-
-    const attemptUnlock = (code) => {
-      if (code === this.passcode) {
-        sessionStorage.setItem(this.storageKey, "true");
-        if (bypassModal) {
-          bypassModal.classList.add("hidden");
-          bypassModal.classList.remove("flex");
-        }
-        this.triggerUnlockAnimation(false);
-      } else {
-        if (passError) {
-          passError.classList.remove("hidden");
-          passError.textContent = "Incorrect passcode. Please enter the valid key.";
-        }
-        if (passInput) {
-          passInput.classList.add("border-red-500");
-          setTimeout(() => passInput.classList.remove("border-red-500"), 1000);
-        }
-      }
-    };
-
-    if (submitPassBtn && passInput) {
-      submitPassBtn.addEventListener("click", () => {
-        attemptUnlock(passInput.value.trim());
-      });
-      passInput.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") attemptUnlock(passInput.value.trim());
-      });
-    }
-  }
-
   instantUnlock() {
     this.isUnlocked = true;
     if (this.lockOverlay) {
@@ -146,10 +86,9 @@ export class Gatekeeper {
     this.onUnlockCallback();
   }
 
-  triggerUnlockAnimation(isAutomatic = false) {
+  triggerUnlockAnimation() {
     if (this.isUnlocked) return;
     this.isUnlocked = true;
-    sessionStorage.setItem(this.storageKey, "true");
 
     const lockIcon = document.getElementById("lock-shackle");
     const unlockStatus = document.getElementById("unlock-status-badge");
@@ -159,7 +98,7 @@ export class Gatekeeper {
     }
 
     if (unlockStatus) {
-      unlockStatus.textContent = isAutomatic ? "October 21 Reached · Portal Open" : "Key Verified · Welcome Irnum";
+      unlockStatus.textContent = "21 October Reached · Portal Open";
       unlockStatus.classList.add("text-emerald-400", "border-emerald-500/40");
     }
 
