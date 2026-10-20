@@ -279,14 +279,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (audioBtn) {
     audioBtn.addEventListener("click", () => {
-      const isPlaying = audioEngine.toggle();
+      const isPlaying = audioEngine.toggleBirthday();
       updateAudioUI(isPlaying);
     });
   }
 
   // Update audio UI on audio element events
-  audioEngine.audio.addEventListener("play", () => updateAudioUI(true));
-  audioEngine.audio.addEventListener("pause", () => updateAudioUI(false));
+  audioEngine.birthdayAudio.addEventListener("play", () => updateAudioUI(true));
+  audioEngine.birthdayAudio.addEventListener("pause", () => updateAudioUI(false));
+  audioEngine.congratsAudio.addEventListener("play", () => updateAudioUI(true));
+  audioEngine.congratsAudio.addEventListener("pause", () => updateAudioUI(false));
 
   function initExperience() {
     new CakeCeremony(audioEngine);
