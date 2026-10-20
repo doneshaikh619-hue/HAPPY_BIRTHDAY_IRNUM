@@ -1,17 +1,15 @@
 /**
- * High-End 3D Cake Cutting Ceremony & Partner Verification Engine
- * Features realistic 3D slice extraction, animated knife cut,
- * floating sky lanterns, and explosive fireworks show.
- * Background Happy Birthday song continues without interruption.
+ * High-End 3D Cake Ceremony & Partner Verification Engine
+ * Bridges Three.js WebGL 3D Cake with Lantern Canvas and Fireworks.
+ * Background Happy Birthday song plays continuously without interruption.
  */
+
+import { ThreeCakeCeremony } from "./three-cake.js";
 
 export class CakeCeremony {
   constructor(audioEngine) {
     this.audio = audioEngine;
-    this.isBlown = false;
-    this.isCut = false;
     this.lanterns = [];
-    this.fireworks = [];
     this.fireworkParticles = [];
     
     this.lanternCanvas = document.getElementById("lantern-canvas");
@@ -24,7 +22,14 @@ export class CakeCeremony {
   }
 
   init() {
+    // Expose spawnSkyLanterns globally for Three.js cake to trigger on candle blow
+    window.spawnSkyLanterns = (count) => this.spawnLanterns(count);
+
+    // Initialize the Three.js WebGL 3D Cake
+    this.threeCake = new ThreeCakeCeremony("three-cake-container", this.audio);
+
     this.bindEvents();
+
     if (this.lanternCanvas) {
       this.resizeLanternCanvas();
       window.addEventListener("resize", () => this.resizeLanternCanvas());
@@ -50,24 +55,6 @@ export class CakeCeremony {
   }
 
   bindEvents() {
-    const blowBtn = document.getElementById("btn-blow-candle");
-    const cutBtn = document.getElementById("btn-cut-cake");
-    const candleFlame = document.getElementById("cake-candle-flame");
-    const knifeGraphic = document.getElementById("cake-knife-graphic");
-
-    if (blowBtn) {
-      blowBtn.addEventListener("click", () => this.blowCandle());
-    }
-    if (candleFlame) {
-      candleFlame.addEventListener("click", () => this.blowCandle());
-    }
-    if (cutBtn) {
-      cutBtn.addEventListener("click", () => this.cutCake());
-    }
-    if (knifeGraphic) {
-      knifeGraphic.addEventListener("click", () => this.cutCake());
-    }
-
     // Partner Verification Form (Mustafa)
     const partnerForm = document.getElementById("partner-verify-form");
     const partnerInput = document.getElementById("partner-name-input");
@@ -91,12 +78,12 @@ export class CakeCeremony {
           this.launchGrandFireworks();
           this.audio.playFireworkBoom();
           
-          // Keep background Happy Birthday song playing continuously without stopping!
+          // Keep background Happy Birthday song playing continuously!
           this.audio.playBirthday();
 
           if (window.triggerGoldenBurst) {
             window.triggerGoldenBurst();
-            setTimeout(() => window.triggerGoldenBurst(), 300);
+            setTimeout(() => window.triggerGoldenBurst(), 350);
           }
         } else {
           if (partnerError) {
@@ -108,98 +95,6 @@ export class CakeCeremony {
         }
       });
     }
-  }
-
-  blowCandle() {
-    if (this.isBlown) return;
-    this.isBlown = true;
-
-    const flame = document.getElementById("cake-candle-flame");
-    const smoke = document.getElementById("cake-candle-smoke");
-    const statusText = document.getElementById("cake-ceremony-status");
-    const blowBtn = document.getElementById("btn-blow-candle");
-    const cutBtn = document.getElementById("btn-cut-cake");
-    const knife = document.getElementById("cake-knife-graphic");
-
-    if (flame) {
-      flame.classList.add("opacity-0", "scale-50");
-      setTimeout(() => flame.classList.add("hidden"), 300);
-    }
-
-    if (smoke) {
-      smoke.classList.remove("hidden");
-      smoke.classList.add("animate-smoke");
-    }
-
-    this.audio.playWindBlow();
-    setTimeout(() => this.audio.playChime(), 350);
-
-    // Spawn 21 floating sky lanterns
-    this.spawnLanterns(21);
-
-    if (statusText) {
-      statusText.innerHTML = "Candle blown and wishes released. <span class='text-amber-300 font-medium'>Click the knife or button to cut the cake!</span>";
-    }
-
-    if (blowBtn) {
-      blowBtn.classList.add("opacity-40", "pointer-events-none");
-    }
-    if (cutBtn) {
-      cutBtn.classList.remove("opacity-40", "pointer-events-none");
-      cutBtn.classList.add("animate-pulse");
-    }
-    if (knife) {
-      knife.classList.add("knife-hover-invite");
-    }
-  }
-
-  cutCake() {
-    if (this.isCut) return;
-    this.isCut = true;
-
-    const knife = document.getElementById("cake-knife-graphic");
-    const slicePiece = document.getElementById("cake-3d-slice-piece");
-    const slicePlate = document.getElementById("cake-serving-plate");
-    const statusText = document.getElementById("cake-ceremony-status");
-    const cutBtn = document.getElementById("btn-cut-cake");
-
-    // Slicing sound
-    this.audio.playKnifeCut();
-
-    // Knife glides and slices down through the cake
-    if (knife) {
-      knife.classList.remove("knife-hover-invite");
-      knife.classList.add("animate-knife-cut");
-    }
-
-    setTimeout(() => {
-      // 3D wedge slice physically pulls forward out of cake onto dessert plate
-      if (slicePiece) {
-        slicePiece.classList.add("slice-slide-out");
-      }
-      if (slicePlate) {
-        slicePlate.classList.remove("opacity-0");
-        slicePlate.classList.add("opacity-100");
-      }
-
-      this.audio.playChime();
-      this.audio.playBirthday(); // Happy Birthday piano song continues/starts!
-
-      if (window.triggerGoldenBurst) {
-        window.triggerGoldenBurst();
-        setTimeout(() => window.triggerGoldenBurst(), 300);
-      }
-
-      if (statusText) {
-        statusText.innerHTML = "Cake slice extracted for <span class='text-amber-400 font-medium gold-shimmer'>Irnum</span>. Happy Birthday!";
-      }
-
-      if (cutBtn) {
-        cutBtn.classList.remove("animate-pulse");
-        cutBtn.textContent = "Cake Cut Completed";
-        cutBtn.classList.add("opacity-60", "pointer-events-none");
-      }
-    }, 600);
   }
 
   spawnLanterns(count = 21) {
@@ -250,7 +145,7 @@ export class CakeCeremony {
       ctx.save();
       ctx.globalAlpha = l.alpha;
 
-      // Outer radial glow
+      // Outer radial warm glow
       const grad = ctx.createRadialGradient(curX, l.y, 2, curX, l.y, l.size * 2.2);
       grad.addColorStop(0, "rgba(255, 210, 110, 0.9)");
       grad.addColorStop(0.35, "rgba(212, 175, 55, 0.35)");

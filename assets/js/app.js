@@ -225,7 +225,9 @@ class LightboxManager {
       this.phoneWrapper.classList.remove("hidden");
       this.videoEl.src = `assets/media/${item.file}`;
       this.videoEl.loop = true;
-      this.videoEl.muted = false;
+      this.videoEl.muted = true;
+      this.videoEl.setAttribute("playsinline", "true");
+      this.videoEl.setAttribute("loop", "true");
       this.videoEl.load();
 
       const playPromise = this.videoEl.play();
@@ -235,6 +237,12 @@ class LightboxManager {
           this.videoEl.play().catch(() => {});
         });
       }
+
+      // Infinite seamless loop
+      this.videoEl.onended = () => {
+        this.videoEl.currentTime = 0;
+        this.videoEl.play().catch(() => {});
+      };
     } else {
       this.phoneWrapper.classList.add("hidden");
       if (this.videoEl) {
@@ -407,14 +415,22 @@ document.addEventListener("DOMContentLoaded", () => {
       const idx = parseInt(card.dataset.reelIndex, 10);
 
       if (video) {
+        video.loop = true;
+        video.setAttribute("playsinline", "true");
+        video.setAttribute("loop", "true");
+
+        // Seamless loop without freezing
+        video.addEventListener("ended", () => {
+          video.currentTime = 0;
+          video.play().catch(() => {});
+        });
+
         card.addEventListener("mouseenter", () => {
           video.play().catch(() => {});
         });
 
         card.addEventListener("mouseleave", () => {
           video.pause();
-          video.currentTime = 0;
-          if (progressBar) progressBar.style.width = "0%";
         });
 
         video.addEventListener("timeupdate", () => {
