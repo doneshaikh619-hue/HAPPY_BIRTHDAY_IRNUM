@@ -4,12 +4,12 @@
  * Strictly zero emojis.
  */
 
-import { MEDIA_COLLECTIONS, MEMOIR_TEXTS } from "./gallery-data.js?v=20261020_3";
-import { Gatekeeper } from "./countdown.js?v=20261020_3";
-import { AmbientAudioEngine } from "./audio.js?v=20261020_3";
-import { CoverflowSlider } from "./slider.js?v=20261020_3";
-import { init3DTilt } from "./tilt.js?v=20261020_3";
-import { CakeCeremony } from "./cake-ceremony.js?v=20261020_3";
+import { MEDIA_COLLECTIONS, MEMOIR_TEXTS } from "./gallery-data.js?v=20261020_4";
+import { Gatekeeper } from "./countdown.js?v=20261020_4";
+import { AmbientAudioEngine } from "./audio.js?v=20261020_4";
+import { CoverflowSlider } from "./slider.js?v=20261020_4";
+import { init3DTilt } from "./tilt.js?v=20261020_4";
+import { CakeCeremony } from "./cake-ceremony.js?v=20261020_4";
 
 // Global Audio Engine Instance
 const audioEngine = new AmbientAudioEngine();

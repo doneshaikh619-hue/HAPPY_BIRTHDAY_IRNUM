@@ -5,7 +5,7 @@
  * Strictly zero emojis.
  */
 
-import { ThreeCakeCeremony } from "./three-cake.js?v=20261020_3";
+import { ThreeCakeCeremony } from "./three-cake.js?v=20261020_4";
 
 export class CakeCeremony {
   constructor(audioEngine) {
@@ -90,7 +90,7 @@ export class CakeCeremony {
         } else {
           if (partnerError) {
             partnerError.classList.remove("hidden");
-            partnerError.textContent = "Companion name not recognized. Enter Mustafa";
+            partnerError.textContent = "You have chosen an incorrect partner name. Please try again.";
           }
           partnerInput.classList.add("border-red-500");
           setTimeout(() => partnerInput.classList.remove("border-red-500"), 1000);
