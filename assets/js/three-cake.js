@@ -529,8 +529,9 @@ export class ThreeCakeCeremony {
     const blowBtn = document.getElementById("btn-blow-candle");
     const statusText = document.getElementById("cake-ceremony-status");
 
-    // Audio: Breath whoosh sound
+    // Audio: start music and blow sound synchronously inside direct user gesture!
     this.audio.playWindBlow();
+    this.audio.playBirthday();
     setTimeout(() => this.audio.playChime(), 350);
 
     // Animate all 7 flames scaling down to zero simultaneously

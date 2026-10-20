@@ -4,12 +4,12 @@
  * Strictly zero emojis.
  */
 
-import { MEDIA_COLLECTIONS, MEMOIR_TEXTS } from "./gallery-data.js?v=20261020_6";
-import { Gatekeeper } from "./countdown.js?v=20261020_6";
-import { AmbientAudioEngine } from "./audio.js?v=20261020_6";
-import { CoverflowSlider } from "./slider.js?v=20261020_6";
-import { init3DTilt } from "./tilt.js?v=20261020_6";
-import { CakeCeremony } from "./cake-ceremony.js?v=20261020_6";
+import { MEDIA_COLLECTIONS, MEMOIR_TEXTS } from "./gallery-data.js?v=20261020_7";
+import { Gatekeeper } from "./countdown.js?v=20261020_7";
+import { AmbientAudioEngine } from "./audio.js?v=20261020_7";
+import { CoverflowSlider } from "./slider.js?v=20261020_7";
+import { init3DTilt } from "./tilt.js?v=20261020_7";
+import { CakeCeremony } from "./cake-ceremony.js?v=20261020_7";
 
 // Global Audio Engine Instance
 const audioEngine = new AmbientAudioEngine();
@@ -277,32 +277,53 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Setup Continuous Audio Button
-  const audioBtn = document.getElementById("btn-ambient-audio");
-  const audioWaves = document.getElementById("audio-equalizer");
-  const audioStatusText = document.getElementById("audio-status-text");
+  // Setup Audio Controllers (Both Lock Screen & Main Header)
+  const audioBtnHeader = document.getElementById("btn-ambient-audio");
+  const audioWavesHeader = document.getElementById("audio-equalizer");
+  const audioStatusHeader = document.getElementById("audio-status-text");
 
-  const updateAudioUI = (isPlaying) => {
+  const audioBtnLock = document.getElementById("btn-lock-audio");
+  const audioWavesLock = document.getElementById("lock-audio-equalizer");
+  const audioStatusLock = document.getElementById("lock-audio-status");
+
+  const updateAllAudioUI = (isPlaying) => {
     if (isPlaying) {
-      audioWaves.classList.remove("opacity-30");
-      audioWaves.classList.add("equalizer-active");
-      if (audioStatusText) audioStatusText.textContent = "Song: Playing";
+      if (audioWavesHeader) {
+        audioWavesHeader.classList.remove("opacity-30");
+        audioWavesHeader.classList.add("equalizer-active");
+      }
+      if (audioStatusHeader) audioStatusHeader.textContent = "Song: Playing";
+
+      if (audioWavesLock) {
+        audioWavesLock.classList.remove("opacity-40");
+        audioWavesLock.classList.add("equalizer-active");
+      }
+      if (audioStatusLock) audioStatusLock.textContent = "Pause Melody";
     } else {
-      audioWaves.classList.add("opacity-30");
-      audioWaves.classList.remove("equalizer-active");
-      if (audioStatusText) audioStatusText.textContent = "Song: Paused";
+      if (audioWavesHeader) {
+        audioWavesHeader.classList.add("opacity-30");
+        audioWavesHeader.classList.remove("equalizer-active");
+      }
+      if (audioStatusHeader) audioStatusHeader.textContent = "Song: Play Melody";
+
+      if (audioWavesLock) {
+        audioWavesLock.classList.add("opacity-40");
+        audioWavesLock.classList.remove("equalizer-active");
+      }
+      if (audioStatusLock) audioStatusLock.textContent = "Play Birthday Melody";
     }
   };
 
-  if (audioBtn) {
-    audioBtn.addEventListener("click", () => {
-      const isPlaying = audioEngine.toggleBirthday();
-      updateAudioUI(isPlaying);
-    });
-  }
+  const handleAudioToggle = () => {
+    const isPlaying = audioEngine.toggleBirthday();
+    updateAllAudioUI(isPlaying);
+  };
 
-  audioEngine.birthdayAudio.addEventListener("play", () => updateAudioUI(true));
-  audioEngine.birthdayAudio.addEventListener("pause", () => updateAudioUI(false));
+  if (audioBtnHeader) audioBtnHeader.addEventListener("click", handleAudioToggle);
+  if (audioBtnLock) audioBtnLock.addEventListener("click", handleAudioToggle);
+
+  audioEngine.birthdayAudio.addEventListener("play", () => updateAllAudioUI(true));
+  audioEngine.birthdayAudio.addEventListener("pause", () => updateAllAudioUI(false));
 
   function initExperience() {
     new CakeCeremony(audioEngine);

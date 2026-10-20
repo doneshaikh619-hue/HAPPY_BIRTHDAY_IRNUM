@@ -1,17 +1,43 @@
 /**
- * Audio Engine with Dedicated Continuous Birthday Track
- * Plus Web Audio tactile and explosive firework sound effects.
- * Congratulations audio removed per user request so Birthday track never stops.
+ * Dedicated Continuous Birthday Audio Engine
+ * Uses DOM preloaded audio track with fallback Audio object.
+ * Synchronous user-gesture execution with automatic unlock fallback.
+ * Strictly zero emojis.
  */
 
 export class AmbientAudioEngine {
   constructor() {
-    this.birthdayAudio = new Audio("assets/audio/happy-birthday-instrumental.mp3");
+    // Try to get preloaded DOM element if present, or create new Audio
+    const domTrack = document.getElementById("birthday-melody-track");
+    this.birthdayAudio = domTrack || new Audio("assets/audio/happy-birthday-instrumental.mp3");
+    this.birthdayAudio.preload = "auto";
     this.birthdayAudio.loop = true;
-    this.birthdayAudio.volume = 0.65;
+    this.birthdayAudio.volume = 0.85;
 
     this.isPlaying = false;
     this.ctx = null;
+
+    // Synchronize play / pause states
+    this.birthdayAudio.addEventListener("play", () => {
+      this.isPlaying = true;
+    });
+    this.birthdayAudio.addEventListener("pause", () => {
+      this.isPlaying = false;
+    });
+
+    this.setupUserInteractionUnlock();
+  }
+
+  setupUserInteractionUnlock() {
+    const unlock = () => {
+      this.initCtx();
+      if (this.ctx && this.ctx.state === "suspended") {
+        this.ctx.resume().catch(() => {});
+      }
+    };
+    window.addEventListener("click", unlock, { once: true, passive: true });
+    window.addEventListener("touchstart", unlock, { once: true, passive: true });
+    window.addEventListener("keydown", unlock, { once: true, passive: true });
   }
 
   initCtx() {
@@ -24,25 +50,51 @@ export class AmbientAudioEngine {
 
   toggleBirthday() {
     this.initCtx();
-    if (this.ctx && this.ctx.state === "suspended") this.ctx.resume();
+    if (this.ctx && this.ctx.state === "suspended") {
+      this.ctx.resume().catch(() => {});
+    }
 
-    if (this.isPlaying) {
+    if (!this.birthdayAudio.paused) {
       this.pauseBirthday();
+      return false;
     } else {
       this.playBirthday();
+      return true;
     }
-    return this.isPlaying;
   }
 
   playBirthday() {
     this.initCtx();
-    if (this.ctx && this.ctx.state === "suspended") this.ctx.resume();
+    if (this.ctx && this.ctx.state === "suspended") {
+      this.ctx.resume().catch(() => {});
+    }
 
-    this.birthdayAudio.play().then(() => {
+    if (!this.birthdayAudio.paused) {
       this.isPlaying = true;
-    }).catch((err) => {
-      console.warn("Audio play prevented:", err);
-    });
+      return;
+    }
+
+    if (this.birthdayAudio.readyState === 0) {
+      this.birthdayAudio.load();
+    }
+
+    const promise = this.birthdayAudio.play();
+    if (promise !== undefined) {
+      promise.then(() => {
+        this.isPlaying = true;
+      }).catch((err) => {
+        console.warn("Autoplay policy waiting for direct tap:", err);
+        const onNextTap = () => {
+          this.birthdayAudio.play().then(() => {
+            this.isPlaying = true;
+          }).catch(() => {});
+          window.removeEventListener("click", onNextTap);
+          window.removeEventListener("touchstart", onNextTap);
+        };
+        window.addEventListener("click", onNextTap, { once: true });
+        window.addEventListener("touchstart", onNextTap, { once: true });
+      });
+    }
   }
 
   pauseBirthday() {

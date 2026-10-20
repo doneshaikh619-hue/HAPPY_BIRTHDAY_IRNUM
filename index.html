@@ -35,12 +35,15 @@
   </script>
 
   <!-- Custom Stylesheets -->
-  <link rel="stylesheet" href="assets/css/style.css?v=20261020_6" />
+  <link rel="stylesheet" href="assets/css/style.css?v=20261020_7" />
 
   <!-- Three.js 3D WebGL Engine -->
-  <script src="assets/js/vendor/three.min.js?v=20261020_6"></script>
+  <script src="assets/js/vendor/three.min.js?v=20261020_7"></script>
 </head>
 <body class="bg-[#08080a] text-slate-100 overflow-x-hidden antialiased selection:bg-amber-400 selection:text-black">
+
+  <!-- Preloaded High-Fidelity Happy Birthday Instrumental Audio Track -->
+  <audio id="birthday-melody-track" src="assets/audio/happy-birthday-instrumental.mp3" preload="auto" loop></audio>
 
   <!-- Interactive Stardust Galaxy Canvas -->
   <canvas id="stardust-canvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
@@ -50,6 +53,20 @@
   <!-- Active until 21 October 2026               -->
   <!-- ========================================== -->
   <div id="lock-screen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#08080a]/95 backdrop-blur-2xl transition-all duration-700 select-none">
+    
+    <!-- Floating Audio Controller on Lock Screen -->
+    <div class="absolute top-6 right-6 z-50">
+      <button id="btn-lock-audio" class="flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-amber-400/40 transition-all text-xs font-mono tracking-wider text-amber-200/90 shadow-lg cursor-pointer">
+        <div id="lock-audio-equalizer" class="flex items-end gap-0.5 h-3 opacity-40">
+          <span class="w-0.5 bg-amber-400 rounded-full h-1"></span>
+          <span class="w-0.5 bg-amber-400 rounded-full h-2"></span>
+          <span class="w-0.5 bg-amber-400 rounded-full h-3"></span>
+          <span class="w-0.5 bg-amber-400 rounded-full h-1.5"></span>
+        </div>
+        <span id="lock-audio-status">Play Birthday Melody</span>
+      </button>
+    </div>
+
     <div class="relative w-full max-w-2xl p-8 sm:p-12 rounded-3xl bg-[#0e0e14]/90 border border-white/[0.08] shadow-[0_20px_70px_rgba(0,0,0,0.8)] text-center overflow-hidden">
       
       <!-- Ambient Backglow -->
@@ -615,6 +632,6 @@
   </div>
 
   <!-- Main ES Module Script -->
-  <script type="module" src="assets/js/app.js?v=20261020_6"></script>
+  <script type="module" src="assets/js/app.js?v=20261020_7"></script>
 </body>
 </html>
