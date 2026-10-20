@@ -35,11 +35,10 @@
   </script>
 
   <!-- Custom Stylesheets -->
-  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/style.css?v=20261020_3" />
 
   <!-- Three.js 3D WebGL Engine -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script>window.THREE || document.write('<script src="assets/js/vendor/three.min.js"><\/script>')</script>
+  <script src="assets/js/vendor/three.min.js?v=20261020_3"></script>
 </head>
 <body class="bg-[#08080a] text-slate-100 overflow-x-hidden antialiased selection:bg-amber-400 selection:text-black">
 
@@ -263,7 +262,7 @@
     <!-- ========================================== -->
     <!-- SECTION 1: 3D CAKE & FLOATING CANDLES      -->
     <!-- ========================================== -->
-    <section id="ceremony" class="relative py-28 px-4 bg-[#0a0a0f] border-t border-white/[0.04] overflow-hidden">
+    <section id="ceremony" class="relative py-24 px-4 bg-transparent overflow-hidden">
       <!-- Floating Candles Sky Canvas -->
       <canvas id="lantern-canvas" class="absolute inset-0 pointer-events-none z-0"></canvas>
 
@@ -278,8 +277,8 @@
         </div>
 
         <!-- Seamless 3D Patisserie Cake Display (Transparent Canvas, No Box Frame) -->
-        <div class="relative w-full max-w-3xl mx-auto flex flex-col items-center justify-center select-none">
-          <div id="three-cake-container" class="relative w-full h-[520px] sm:h-[580px] mx-auto cursor-grab active:cursor-grabbing bg-transparent overflow-visible">
+        <div class="relative w-full max-w-3xl mx-auto flex flex-col items-center justify-center select-none bg-transparent">
+          <div id="three-cake-container" class="relative w-full h-[520px] sm:h-[580px] mx-auto cursor-grab active:cursor-grabbing bg-transparent overflow-visible border-0 shadow-none outline-none">
             <!-- Three.js 3D Canvas rendered with alpha: true directly on page -->
           </div>
           <div class="flex items-center gap-3 text-[10px] font-mono tracking-widest text-neutral-400 mt-2 uppercase">
@@ -304,7 +303,7 @@
           <!-- Button 2: Blow Birthday Candles -->
           <button id="btn-blow-candle" class="px-7 py-3 rounded-full bg-white/[0.05] hover:bg-white/[0.12] border border-amber-400/50 hover:border-amber-400 text-xs font-mono tracking-wider text-amber-200 uppercase transition-all duration-300 flex items-center gap-2 shadow-lg">
             <svg class="w-4 h-4 stroke-current stroke-[1.5]" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-            <span>Make Wish & Blow Candles</span>
+            <span>Blow Birthday Candles</span>
           </button>
         </div>
 
@@ -646,6 +645,6 @@
   </div>
 
   <!-- Main ES Module Script -->
-  <script type="module" src="assets/js/app.js"></script>
+  <script type="module" src="assets/js/app.js?v=20261020_3"></script>
 </body>
 </html>
