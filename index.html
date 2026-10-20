@@ -261,48 +261,50 @@
     </section>
 
     <!-- ========================================== -->
-    <!-- SECTION 1: 3D CAKE CUTTING & SKY LANTERNS  -->
+    <!-- SECTION 1: 3D CAKE & FLOATING CANDLES      -->
     <!-- ========================================== -->
     <section id="ceremony" class="relative py-28 px-4 bg-[#0a0a0f] border-t border-white/[0.04] overflow-hidden">
-      <!-- Floating Lanterns Sky Canvas -->
+      <!-- Floating Candles Sky Canvas -->
       <canvas id="lantern-canvas" class="absolute inset-0 pointer-events-none z-0"></canvas>
 
       <div class="relative z-10 max-w-4xl mx-auto text-center space-y-10">
         
         <div class="space-y-3 max-w-xl mx-auto">
-          <span class="text-[10px] font-mono tracking-[0.3em] uppercase text-amber-400 block">The Birthday Rite · 21 October</span>
-          <h2 class="font-serif text-3xl sm:text-5xl text-white font-normal">The Ceremony of Celebration</h2>
+          <span class="text-[10px] font-mono tracking-[0.3em] uppercase text-amber-400 block">The Candlelit Ceremony · 21 October</span>
+          <h2 class="font-serif text-3xl sm:text-5xl text-white font-normal">The Ceremony of Wishes</h2>
           <p class="text-xs sm:text-sm text-neutral-400 font-light leading-relaxed">
-            Blow the flame to release twenty-one glowing lanterns into the night sky, then divide the royal cake to extract her celebratory slice.
+            Release glowing floating candles into the midnight sky, then blow the candles on her celebratory cake to seal twenty-one blessings.
           </p>
         </div>
 
-        <!-- Photorealistic Three.js WebGL 3D Cake Display -->
-        <div class="relative w-full max-w-2xl mx-auto flex flex-col items-center justify-center select-none">
-          <div id="three-cake-container" class="relative w-full h-[480px] sm:h-[540px] rounded-3xl overflow-hidden shadow-[0_20px_80px_rgba(0,0,0,0.8)] border border-amber-500/20 bg-gradient-to-b from-[#111118]/80 to-[#07070a]/90 backdrop-blur-xl cursor-grab active:cursor-grabbing">
-            <!-- 3D WebGL Canvas is injected here -->
+        <!-- Seamless 3D Patisserie Cake Display (Transparent Canvas, No Box Frame) -->
+        <div class="relative w-full max-w-3xl mx-auto flex flex-col items-center justify-center select-none">
+          <div id="three-cake-container" class="relative w-full h-[520px] sm:h-[580px] mx-auto cursor-grab active:cursor-grabbing bg-transparent overflow-visible">
+            <!-- Three.js 3D Canvas rendered with alpha: true directly on page -->
           </div>
-          <div class="flex items-center gap-3 text-[10px] font-mono tracking-widest text-neutral-400 mt-3 uppercase">
-            <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
-            <span>Drag to rotate 3D view · Click candle to make a wish · Click knife to cut</span>
+          <div class="flex items-center gap-3 text-[10px] font-mono tracking-widest text-neutral-400 mt-2 uppercase">
+            <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+            <span>Drag to rotate 3D cake · Click candles to blow out</span>
           </div>
         </div>
 
         <!-- Status & Guidance -->
         <div id="cake-ceremony-status" class="text-xs sm:text-sm font-mono tracking-wider text-neutral-300">
-          Step 1: Make a wish and blow out the birthday candle.
+          Step 1: Release the glowing floating candles, then make a wish and blow out the birthday candles.
         </div>
 
         <!-- Interactive Ceremony Action Buttons -->
         <div class="flex flex-wrap items-center justify-center gap-4 pt-2">
-          <button id="btn-blow-candle" class="px-6 py-3 rounded-full bg-white/[0.04] hover:bg-white/[0.1] border border-amber-400/40 hover:border-amber-400 text-xs font-mono tracking-wider text-amber-200 uppercase transition-all duration-300 flex items-center gap-2 shadow-lg">
-            <svg class="w-4 h-4 stroke-current stroke-[1.5]" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-            <span>Make Wish & Blow Candle</span>
+          <!-- Button 1: Release Floating Candles -->
+          <button id="btn-release-candles" class="px-6 py-3 rounded-full bg-amber-500 hover:bg-amber-400 text-black font-semibold text-xs font-mono tracking-wider uppercase transition-all duration-300 flex items-center gap-2 shadow-[0_10px_30px_rgba(212,175,55,0.3)]">
+            <svg class="w-4 h-4 stroke-current stroke-[2]" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            <span>Release Floating Candles</span>
           </button>
 
-          <button id="btn-cut-cake" class="px-7 py-3 rounded-full bg-amber-500 hover:bg-amber-400 text-black font-semibold text-xs font-mono tracking-wider uppercase opacity-40 pointer-events-none transition-all duration-300 flex items-center gap-2 shadow-[0_10px_30px_rgba(212,175,55,0.3)]">
-            <svg class="w-4 h-4 stroke-current stroke-[2]" viewBox="0 0 24 24" fill="none"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
-            <span>Cut The Birthday Cake</span>
+          <!-- Button 2: Blow Birthday Candles -->
+          <button id="btn-blow-candle" class="px-7 py-3 rounded-full bg-white/[0.05] hover:bg-white/[0.12] border border-amber-400/50 hover:border-amber-400 text-xs font-mono tracking-wider text-amber-200 uppercase transition-all duration-300 flex items-center gap-2 shadow-lg">
+            <svg class="w-4 h-4 stroke-current stroke-[1.5]" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            <span>Make Wish & Blow Candles</span>
           </button>
         </div>
 

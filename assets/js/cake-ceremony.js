@@ -1,7 +1,8 @@
 /**
- * High-End 3D Cake Ceremony & Partner Verification Engine
- * Bridges Three.js WebGL 3D Cake with Lantern Canvas and Fireworks.
+ * High-End 3D Cake Ceremony & Floating Candles Engine
+ * Bridges Three.js WebGL 3D Cake with Floating Candles Canvas and Mustafa Fireworks.
  * Background Happy Birthday song plays continuously without interruption.
+ * Strictly zero emojis.
  */
 
 import { ThreeCakeCeremony } from "./three-cake.js";
@@ -9,11 +10,11 @@ import { ThreeCakeCeremony } from "./three-cake.js";
 export class CakeCeremony {
   constructor(audioEngine) {
     this.audio = audioEngine;
-    this.lanterns = [];
+    this.candles = [];
     this.fireworkParticles = [];
     
-    this.lanternCanvas = document.getElementById("lantern-canvas");
-    this.lCtx = this.lanternCanvas ? this.lanternCanvas.getContext("2d") : null;
+    this.candleCanvas = document.getElementById("lantern-canvas");
+    this.cCtx = this.candleCanvas ? this.candleCanvas.getContext("2d") : null;
     
     this.fwCanvas = document.getElementById("fireworks-canvas");
     this.fwCtx = this.fwCanvas ? this.fwCanvas.getContext("2d") : null;
@@ -22,18 +23,19 @@ export class CakeCeremony {
   }
 
   init() {
-    // Expose spawnSkyLanterns globally for Three.js cake to trigger on candle blow
-    window.spawnSkyLanterns = (count) => this.spawnLanterns(count);
+    // Expose floating candles globally
+    window.spawnFloatingCandles = (count) => this.spawnFloatingCandles(count);
+    window.spawnSkyLanterns = (count) => this.spawnFloatingCandles(count);
 
-    // Initialize the Three.js WebGL 3D Cake
+    // Initialize the Three.js WebGL 3D Cake (full seamless cake, no cuts, transparent background)
     this.threeCake = new ThreeCakeCeremony("three-cake-container", this.audio);
 
     this.bindEvents();
 
-    if (this.lanternCanvas) {
-      this.resizeLanternCanvas();
-      window.addEventListener("resize", () => this.resizeLanternCanvas());
-      this.animateLanterns();
+    if (this.candleCanvas) {
+      this.resizeCandleCanvas();
+      window.addEventListener("resize", () => this.resizeCandleCanvas());
+      this.animateFloatingCandles();
     }
     if (this.fwCanvas) {
       this.resizeFwCanvas();
@@ -42,10 +44,10 @@ export class CakeCeremony {
     }
   }
 
-  resizeLanternCanvas() {
-    if (!this.lanternCanvas) return;
-    this.lanternCanvas.width = this.lanternCanvas.parentElement.clientWidth;
-    this.lanternCanvas.height = this.lanternCanvas.parentElement.clientHeight;
+  resizeCandleCanvas() {
+    if (!this.candleCanvas) return;
+    this.candleCanvas.width = this.candleCanvas.parentElement.clientWidth;
+    this.candleCanvas.height = this.candleCanvas.parentElement.clientHeight;
   }
 
   resizeFwCanvas() {
@@ -97,92 +99,120 @@ export class CakeCeremony {
     }
   }
 
-  spawnLanterns(count = 21) {
-    if (!this.lanternCanvas) return;
-    const w = this.lanternCanvas.width;
-    const h = this.lanternCanvas.height;
+  // Spawns floating taper candles ascending from below the screen
+  spawnFloatingCandles(count = 25) {
+    if (!this.candleCanvas) return;
+    const w = this.candleCanvas.width;
+    const h = this.candleCanvas.height;
 
     for (let i = 0; i < count; i++) {
       setTimeout(() => {
-        this.lanterns.push({
-          x: w * 0.15 + Math.random() * (w * 0.7),
-          y: h + 40,
-          size: Math.random() * 14 + 18,
+        this.candles.push({
+          x: w * 0.1 + Math.random() * (w * 0.8),
+          y: h + 50,
+          size: Math.random() * 8 + 24, // Candle length scale
           speedY: Math.random() * 1.1 + 0.85,
-          swaySpeed: Math.random() * 0.025 + 0.015,
-          swayAmount: Math.random() * 22 + 12,
+          swaySpeed: Math.random() * 0.025 + 0.012,
+          swayAmount: Math.random() * 20 + 10,
           phase: Math.random() * Math.PI * 2,
           alpha: 0,
-          maxAlpha: Math.random() * 0.7 + 0.3
+          maxAlpha: Math.random() * 0.65 + 0.35
         });
-      }, i * 160);
+      }, i * 140);
     }
   }
 
-  animateLanterns() {
-    if (!this.lCtx || !this.lanternCanvas) return;
-    this.lCtx.clearRect(0, 0, this.lanternCanvas.width, this.lanternCanvas.height);
+  animateFloatingCandles() {
+    if (!this.cCtx || !this.candleCanvas) return;
+    this.cCtx.clearRect(0, 0, this.candleCanvas.width, this.candleCanvas.height);
 
-    for (let i = 0; i < this.lanterns.length; i++) {
-      const l = this.lanterns[i];
-      l.y -= l.speedY;
-      l.phase += l.swaySpeed;
-      const curX = l.x + Math.sin(l.phase) * l.swayAmount;
+    for (let i = 0; i < this.candles.length; i++) {
+      const c = this.candles[i];
+      c.y -= c.speedY;
+      c.phase += c.swaySpeed;
+      const curX = c.x + Math.sin(c.phase) * c.swayAmount;
 
-      if (l.y > this.lanternCanvas.height * 0.85) {
-        l.alpha = Math.min(l.maxAlpha, l.alpha + 0.02);
-      } else if (l.y < 90) {
-        l.alpha = Math.max(0, l.alpha - 0.012);
+      // Fade in as it leaves the bottom edge
+      if (c.y > this.candleCanvas.height * 0.85) {
+        c.alpha = Math.min(c.maxAlpha, c.alpha + 0.02);
+      } else if (c.y < 90) {
+        c.alpha = Math.max(0, c.alpha - 0.015);
       }
 
-      if (l.y < -60 || l.alpha <= 0) {
-        this.lanterns.splice(i, 1);
+      if (c.y < -60 || c.alpha <= 0) {
+        this.candles.splice(i, 1);
         i--;
         continue;
       }
 
-      const ctx = this.lCtx;
+      const ctx = this.cCtx;
       ctx.save();
-      ctx.globalAlpha = l.alpha;
+      ctx.globalAlpha = c.alpha;
 
-      // Outer radial warm glow
-      const grad = ctx.createRadialGradient(curX, l.y, 2, curX, l.y, l.size * 2.2);
-      grad.addColorStop(0, "rgba(255, 210, 110, 0.9)");
-      grad.addColorStop(0.35, "rgba(212, 175, 55, 0.35)");
-      grad.addColorStop(1, "rgba(212, 175, 55, 0)");
-      ctx.fillStyle = grad;
+      const candleWidth = c.size * 0.28;
+      const candleHeight = c.size * 1.1;
+
+      // 1. Outer Radial Warm Halo around the Flame
+      const glowGrad = ctx.createRadialGradient(
+        curX, c.y - candleHeight / 2 - 8, 2,
+        curX, c.y - candleHeight / 2 - 8, c.size * 1.7
+      );
+      glowGrad.addColorStop(0, "rgba(255, 235, 150, 0.95)");
+      glowGrad.addColorStop(0.3, "rgba(245, 175, 55, 0.45)");
+      glowGrad.addColorStop(0.7, "rgba(212, 175, 55, 0.15)");
+      glowGrad.addColorStop(1, "rgba(212, 175, 55, 0)");
+      ctx.fillStyle = glowGrad;
       ctx.beginPath();
-      ctx.arc(curX, l.y, l.size * 2.2, 0, Math.PI * 2);
+      ctx.arc(curX, c.y - candleHeight / 2 - 8, c.size * 1.7, 0, Math.PI * 2);
       ctx.fill();
 
-      // 3D paper lantern cylinder body
-      const w = l.size * 0.7;
-      const h = l.size * 0.95;
-
-      const bodyGrad = ctx.createLinearGradient(curX - w, l.y, curX + w, l.y);
-      bodyGrad.addColorStop(0, "rgba(230, 160, 60, 0.8)");
-      bodyGrad.addColorStop(0.5, "rgba(255, 245, 200, 0.95)");
-      bodyGrad.addColorStop(1, "rgba(230, 160, 60, 0.8)");
-      ctx.fillStyle = bodyGrad;
+      // 2. Ivory Wax Cylinder Body
+      const waxGrad = ctx.createLinearGradient(curX - candleWidth / 2, c.y, curX + candleWidth / 2, c.y);
+      waxGrad.addColorStop(0, "#e8e0ce");
+      waxGrad.addColorStop(0.4, "#fffef9");
+      waxGrad.addColorStop(1, "#dcd2be");
+      ctx.fillStyle = waxGrad;
 
       ctx.beginPath();
-      ctx.moveTo(curX - w * 0.8, l.y - h);
-      ctx.lineTo(curX + w * 0.8, l.y - h);
-      ctx.lineTo(curX + w, l.y + h * 0.7);
-      ctx.lineTo(curX - w, l.y + h * 0.7);
-      ctx.closePath();
+      if (ctx.roundRect) {
+        ctx.roundRect(curX - candleWidth / 2, c.y - candleHeight / 2, candleWidth, candleHeight, 3);
+      } else {
+        ctx.rect(curX - candleWidth / 2, c.y - candleHeight / 2, candleWidth, candleHeight);
+      }
       ctx.fill();
 
-      // Inner flame ember
-      ctx.fillStyle = "#ffffff";
+      // Gold spiral trim line on candle wax
+      ctx.strokeStyle = "rgba(212, 175, 55, 0.85)";
+      ctx.lineWidth = 1.2;
       ctx.beginPath();
-      ctx.arc(curX, l.y + h * 0.3, l.size * 0.15, 0, Math.PI * 2);
+      ctx.moveTo(curX - candleWidth / 2, c.y - candleHeight / 6);
+      ctx.lineTo(curX + candleWidth / 2, c.y - candleHeight / 6 + 3);
+      ctx.stroke();
+
+      // 3. Dark Wick
+      ctx.fillStyle = "#111111";
+      ctx.fillRect(curX - 0.75, c.y - candleHeight / 2 - 4, 1.5, 4);
+
+      // 4. Luminous Teardrop Flame
+      const flameGrad = ctx.createLinearGradient(
+        curX, c.y - candleHeight / 2 - 13,
+        curX, c.y - candleHeight / 2 - 4
+      );
+      flameGrad.addColorStop(0, "#fff5cc");
+      flameGrad.addColorStop(0.4, "#f5a623");
+      flameGrad.addColorStop(1, "#d0021b");
+      ctx.fillStyle = flameGrad;
+
+      ctx.beginPath();
+      ctx.moveTo(curX, c.y - candleHeight / 2 - 13);
+      ctx.quadraticCurveTo(curX + 3.5, c.y - candleHeight / 2 - 7, curX, c.y - candleHeight / 2 - 4);
+      ctx.quadraticCurveTo(curX - 3.5, c.y - candleHeight / 2 - 7, curX, c.y - candleHeight / 2 - 13);
       ctx.fill();
 
       ctx.restore();
     }
 
-    requestAnimationFrame(() => this.animateLanterns());
+    requestAnimationFrame(() => this.animateFloatingCandles());
   }
 
   // Grand Fireworks Simulation (Pataka Explosion)
