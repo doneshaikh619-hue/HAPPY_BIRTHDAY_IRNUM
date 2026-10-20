@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth bg-[#08080a] text-slate-100">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Irnum · The Birthday Memoirs · October XXI</title>
+  <meta name="description" content="A bespoke, high-luxury interactive birthday tribute for Irnum on October 21." />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            noir: '#08080a',
+            obsidian: '#0f0f14',
+            gold: {
+              300: '#f5e6c8',
+              400: '#e5c158',
+              500: '#d4af37',
+              600: '#b89428',
+              700: '#8c7322',
+            }
+          },
+          fontFamily: {
+            serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            cinzel: ['"Cinzel"', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"Space Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Custom Stylesheets -->
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body class="bg-[#08080a] text-slate-100 overflow-x-hidden antialiased selection:bg-amber-400 selection:text-black">
+
+  <!-- Interactive Stardust Galaxy Canvas -->
+  <canvas id="stardust-canvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+
+  <!-- ========================================== -->
+  <!-- 1. GATEKEEPER / RESTRICTION LOCK SCREEN    -->
+  <!-- Active until October 21, 2026              -->
+  <!-- ========================================== -->
+  <div id="lock-screen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#08080a]/95 backdrop-blur-2xl transition-all duration-700 select-none">
+    <div class="relative w-full max-w-2xl p-8 sm:p-12 rounded-3xl bg-[#0e0e14]/90 border border-white/[0.08] shadow-[0_20px_70px_rgba(0,0,0,0.8)] text-center overflow-hidden">
+      
+      <!-- Ambient Backglow -->
+      <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <!-- Padlock Insignia -->
+      <div class="relative mx-auto w-20 h-20 mb-8 flex items-center justify-center rounded-full bg-white/[0.03] border border-amber-500/30 shadow-inner">
+        <svg class="w-9 h-9 stroke-amber-400 stroke-[1.25] transition-all duration-500" fill="none" viewBox="0 0 24 24">
+          <path id="lock-shackle" d="M7 11V7a5 5 0 0 1 10 0v4" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="5" y="11" width="14" height="10" rx="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="12" cy="16" r="1" fill="currentColor"/>
+        </svg>
+      </div>
+
+      <!-- Badge -->
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/25 mb-5 text-[11px] font-mono tracking-[0.25em] text-amber-300 uppercase">
+        <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+        October XXI · Celebration In Waiting
+      </div>
+
+      <!-- Title -->
+      <h1 class="font-serif text-3xl sm:text-5xl text-white font-normal tracking-wide mb-3">
+        Reserved For <span class="gold-shimmer font-medium italic">Irnum</span>
+      </h1>
+      <p class="text-xs sm:text-sm text-neutral-400 font-light max-w-md mx-auto mb-10 leading-relaxed">
+        This private digital exhibition and tribute is calibrated to unlock precisely on her birthday, October 21, 2026.
+      </p>
+
+      <!-- Precision Countdown Grid -->
+      <div class="grid grid-cols-4 gap-2 sm:gap-4 max-w-lg mx-auto mb-10">
+        <div class="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06]">
+          <span id="cd-days" class="block font-mono text-2xl sm:text-4xl text-amber-200 font-normal">00</span>
+          <span class="block text-[9px] sm:text-[10px] font-mono tracking-widest text-neutral-400 uppercase mt-1">Days</span>
+        </div>
+        <div class="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06]">
+          <span id="cd-hours" class="block font-mono text-2xl sm:text-4xl text-amber-200 font-normal">00</span>
+          <span class="block text-[9px] sm:text-[10px] font-mono tracking-widest text-neutral-400 uppercase mt-1">Hours</span>
+        </div>
+        <div class="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06]">
+          <span id="cd-minutes" class="block font-mono text-2xl sm:text-4xl text-amber-200 font-normal">00</span>
+          <span class="block text-[9px] sm:text-[10px] font-mono tracking-widest text-neutral-400 uppercase mt-1">Minutes</span>
+        </div>
+        <div class="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06]">
+          <span id="cd-seconds" class="block font-mono text-2xl sm:text-4xl text-amber-200 font-normal">00</span>
+          <span class="block text-[9px] sm:text-[10px] font-mono tracking-widest text-neutral-400 uppercase mt-1">Seconds</span>
+        </div>
+      </div>
+
+      <!-- Status Indicator -->
+      <div id="unlock-status-badge" class="text-xs font-mono tracking-widest text-neutral-400 uppercase mb-6">
+        Target: October 21, 2026 · 00:00:00
+      </div>
+
+      <!-- VIP / Creator Bypass Key -->
+      <div class="pt-6 border-t border-white/[0.06] flex items-center justify-center gap-4">
+        <button id="btn-vip-bypass" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/[0.03] hover:bg-white/[0.08] border border-white/10 hover:border-amber-400/50 text-xs font-mono tracking-wider text-amber-200/80 transition-all duration-300">
+          <svg class="w-3.5 h-3.5 stroke-current stroke-[1.5]" viewBox="0 0 24 24" fill="none"><path d="M21 2l-2 2m-1.5 1.5L12 11m0 0v3m0-3h3m-6 3l-3 3H3v-3l3-3m0 0a5 5 0 1 1 7-7 5 5 0 0 1-7 7z"/></svg>
+          Creator Preview Access
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- VIP Passcode Modal -->
+  <div id="vip-passcode-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+    <div class="w-full max-w-sm p-6 rounded-2xl bg-[#121218] border border-amber-500/30 text-center shadow-2xl">
+      <h3 class="font-serif text-xl text-white mb-2">Creator Verification</h3>
+      <p class="text-xs text-neutral-400 font-light mb-5">Enter passcode to review website before midnight.</p>
+
+      <input id="vip-passcode-input" type="password" placeholder="Enter code (2110)" class="w-full px-4 py-3 rounded-xl bg-black/50 border border-white/10 focus:border-amber-400 text-center text-sm font-mono tracking-widest text-amber-200 outline-none mb-3" />
+      
+      <p id="vip-pass-error" class="text-[11px] text-red-400 font-mono mb-4 hidden"></p>
+
+      <div class="flex gap-2">
+        <button id="btn-submit-passcode" class="flex-1 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-black text-xs font-mono uppercase tracking-wider font-semibold transition-colors">
+          Verify & Enter
+        </button>
+        <button id="btn-quick-preview" class="px-4 py-2.5 rounded-xl bg-white/[0.06] hover:bg-white/10 text-neutral-300 text-xs font-mono tracking-wider transition-colors">
+          Instant Pass
+        </button>
+      </div>
+
+      <button id="btn-close-vip" class="mt-4 text-[11px] font-mono text-neutral-400 hover:text-white uppercase tracking-widest">
+        Return to Countdown
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 2. MAIN EXPERIENCE                         -->
+  <!-- ========================================== -->
+  <div id="main-experience" class="relative z-10 opacity-0 pointer-events-none transition-opacity duration-1000">
+
+    <!-- Floating Luxury Header Navigation -->
+    <header class="fixed top-0 inset-x-0 z-40 px-4 sm:px-8 py-4 backdrop-blur-md bg-[#08080a]/60 border-b border-white/[0.04]">
+      <div class="max-w-7xl mx-auto flex items-center justify-between">
+        
+        <!-- Brand Monogram -->
+        <a href="#hero" class="flex items-center gap-3 group">
+          <div class="w-8 h-8 rounded-full border border-amber-400/40 flex items-center justify-center font-cinzel text-xs font-semibold text-amber-300 group-hover:border-amber-400 transition-colors">
+            I
+          </div>
+          <span class="font-cinzel text-xs tracking-[0.25em] text-neutral-200 uppercase group-hover:text-amber-200 transition-colors">
+            IRNUM · XXI
+          </span>
+        </a>
+
+        <!-- Desktop Nav Anchors -->
+        <nav class="hidden md:flex items-center gap-8 text-[11px] font-mono tracking-[0.2em] uppercase text-neutral-400">
+          <a href="#pillars" class="hover:text-amber-300 transition-colors">01 Reflection</a>
+          <a href="#coverflow" class="hover:text-amber-300 transition-colors">02 Memoirs</a>
+          <a href="#cinema" class="hover:text-amber-300 transition-colors">03 Cinema</a>
+          <a href="#archive" class="hover:text-amber-300 transition-colors">04 Archive</a>
+          <a href="#letter" class="hover:text-amber-300 transition-colors">05 Letter</a>
+        </nav>
+
+        <!-- Ambient Sound Controller -->
+        <button id="btn-ambient-audio" class="flex items-center gap-3 px-3.5 py-1.5 rounded-full bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-amber-400/40 transition-all text-[11px] font-mono tracking-wider text-amber-200/90">
+          <div id="audio-equalizer" class="flex items-end gap-0.5 h-3 opacity-30">
+            <span class="w-0.5 bg-amber-400 rounded-full h-1"></span>
+            <span class="w-0.5 bg-amber-400 rounded-full h-2"></span>
+            <span class="w-0.5 bg-amber-400 rounded-full h-3"></span>
+            <span class="w-0.5 bg-amber-400 rounded-full h-1.5"></span>
+          </div>
+          <span id="audio-status-text" class="hidden sm:inline">Ambience: Ambient</span>
+        </button>
+
+      </div>
+    </header>
+
+    <!-- ========================================== -->
+    <!-- HERO SECTION: THE OVERTURE                 -->
+    <!-- ========================================== -->
+    <section id="hero" class="relative min-h-screen flex items-center justify-center pt-24 pb-16 px-4 ambient-glow-gold">
+      <div class="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        
+        <!-- Left: Editorial Headline -->
+        <div class="lg:col-span-7 text-left space-y-6">
+          
+          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/[0.03] border border-amber-500/25 text-[10px] font-mono tracking-[0.3em] uppercase text-amber-300">
+            <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+            October 21 · A Tribute of Distinction
+          </div>
+
+          <h1 class="font-serif text-5xl sm:text-7xl lg:text-8xl font-light text-white tracking-tight leading-[0.95]">
+            Happy Birthday<br />
+            <span class="gold-shimmer font-normal italic">Irnum</span>
+          </h1>
+
+          <p class="text-sm sm:text-base text-neutral-300 font-light leading-relaxed max-w-xl">
+            A celebration of unwavering poise, quiet strength, and genuine grace. Dedicated to an extraordinary individual whose presence elevates every shared moment.
+          </p>
+
+          <div class="pt-4 flex flex-wrap items-center gap-4 text-xs font-mono tracking-wider">
+            <a href="#coverflow" class="px-7 py-3.5 rounded-full bg-amber-500 hover:bg-amber-400 text-black font-semibold transition-all shadow-[0_10px_30px_rgba(212,175,55,0.25)] flex items-center gap-2">
+              <span>EXPLORE MEMOIRS</span>
+              <svg class="w-3.5 h-3.5 stroke-current stroke-[2]" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+
+            <a href="#letter" class="px-6 py-3.5 rounded-full bg-white/[0.03] hover:bg-white/[0.08] border border-white/10 text-neutral-300 hover:text-white transition-all">
+              Read The Letter
+            </a>
+          </div>
+
+          <!-- Subtle Stats -->
+          <div class="pt-8 grid grid-cols-3 gap-6 border-t border-white/[0.06] max-w-md">
+            <div>
+              <span class="block font-mono text-xl text-amber-300 font-normal">41</span>
+              <span class="block text-[10px] font-mono tracking-widest text-neutral-400 uppercase mt-0.5">Curated Frames</span>
+            </div>
+            <div>
+              <span class="block font-mono text-xl text-amber-300 font-normal">09</span>
+              <span class="block text-[10px] font-mono tracking-widest text-neutral-400 uppercase mt-0.5">Cinema Reels</span>
+            </div>
+            <div>
+              <span class="block font-mono text-xl text-amber-300 font-normal">XXI</span>
+              <span class="block text-[10px] font-mono tracking-widest text-neutral-400 uppercase mt-0.5">October Day</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right: 3D Spotlight Portrait -->
+        <div class="lg:col-span-5 flex justify-center">
+          <div class="tilt-card relative w-[280px] sm:w-[340px] md:w-[380px] h-[440px] sm:h-[500px] md:h-[540px] rounded-3xl bg-[#121217] border border-amber-500/30 p-3 shadow-2xl group transition-all duration-700">
+            <div class="card-glare absolute inset-0 rounded-3xl pointer-events-none opacity-0 z-20"></div>
+
+            <div class="relative w-full h-full rounded-2xl overflow-hidden">
+              <img src="assets/media/Snapchat-418004336.jpg" alt="Irnum" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20"></div>
+
+              <!-- Corner Monogram Badge -->
+              <div class="absolute top-4 right-4 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-[10px] font-mono tracking-widest text-amber-200">
+                FRAME 27
+              </div>
+
+              <!-- Card Bottom Caption -->
+              <div class="absolute bottom-0 inset-x-0 p-6 text-left">
+                <span class="text-[10px] font-mono tracking-[0.25em] text-amber-400 uppercase block mb-1">THE SIGNATURE FRAME</span>
+                <h3 class="font-serif text-2xl text-white font-medium">Irnum</h3>
+                <p class="text-xs text-neutral-300 font-light mt-1">Poise and quiet fortitude in harmony.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SECTION 1: REFLECTIONS & PILLARS           -->
+    <!-- ========================================== -->
+    <section id="pillars" class="py-24 px-4 bg-[#08080a] border-t border-white/[0.04]">
+      <div class="max-w-6xl mx-auto">
+        
+        <div class="text-center max-w-xl mx-auto mb-16 space-y-3">
+          <span class="text-[10px] font-mono tracking-[0.3em] uppercase text-amber-400 block">Chapter I · Character & Essence</span>
+          <h2 class="font-serif text-3xl sm:text-5xl text-white font-normal">The Foundations of Distinction</h2>
+          <p class="text-xs sm:text-sm text-neutral-400 font-light leading-relaxed">
+            Observations on character that endure far beyond passing seasons.
+          </p>
+        </div>
+
+        <div id="pillars-container" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Dynamically populated from JS -->
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SECTION 2: 3D COVERFLOW MEMOIRS (21st.dev) -->
+    <!-- ========================================== -->
+    <section id="coverflow" class="py-24 px-4 bg-[#0a0a0f] border-t border-white/[0.04] overflow-hidden">
+      <div class="max-w-7xl mx-auto text-center">
+        
+        <div class="max-w-xl mx-auto mb-8 space-y-3">
+          <span class="text-[10px] font-mono tracking-[0.3em] uppercase text-amber-400 block">Chapter II · Curated Showcase</span>
+          <h2 class="font-serif text-3xl sm:text-5xl text-white font-normal">The Visual Memoirs</h2>
+          <p class="text-xs sm:text-sm text-neutral-400 font-light leading-relaxed">
+            Drag, swipe, or use controls to browse through highlights in 3D perspective space.
+          </p>
+        </div>
+
+        <!-- 3D Coverflow Mount Point -->
+        <div id="coverflow-wrapper"></div>
+
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SECTION 3: THE MOTION CINEMA (9 MP4 REELS) -->
+    <!-- ========================================== -->
+    <section id="cinema" class="py-24 px-4 bg-[#08080a] border-t border-white/[0.04]">
+      <div class="max-w-6xl mx-auto">
+        
+        <div class="text-center max-w-xl mx-auto mb-16 space-y-3">
+          <span class="text-[10px] font-mono tracking-[0.3em] uppercase text-amber-400 block">Chapter III · Living Motion</span>
+          <h2 class="font-serif text-3xl sm:text-5xl text-white font-normal">The Cinema Chronicles</h2>
+          <p class="text-xs sm:text-sm text-neutral-400 font-light leading-relaxed">
+            Nine video story fragments capturing spontaneous laughter and genuine moments. Hover to preview; click for theater playback.
+          </p>
+        </div>
+
+        <div id="cinema-reels-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Dynamically populated from JS -->
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SECTION 4: MUSEUM BENTO ARCHIVE (41 PHOTOS)-->
+    <!-- ========================================== -->
+    <section id="archive" class="py-24 px-4 bg-[#0a0a0f] border-t border-white/[0.04]">
+      <div class="max-w-7xl mx-auto">
+        
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+          <div>
+            <span class="text-[10px] font-mono tracking-[0.3em] uppercase text-amber-400 block mb-2">Chapter IV · The Complete Vault</span>
+            <h2 class="font-serif text-3xl sm:text-5xl text-white font-normal">Curated Frame Archive</h2>
+            <p class="text-xs sm:text-sm text-neutral-400 font-light mt-1">Forty-one preserved memories in an architectural layout.</p>
+          </div>
+
+          <!-- Category Filter Tabs -->
+          <div class="flex flex-wrap gap-2 text-xs font-mono tracking-wider">
+            <button data-filter="all" class="px-4 py-2 rounded-full bg-amber-400 text-black font-semibold border border-amber-400 transition-colors">
+              All (41)
+            </button>
+            <button data-filter="portraits" class="px-4 py-2 rounded-full bg-white/[0.03] text-neutral-300 hover:text-white border border-white/10 transition-colors">
+              Portraits
+            </button>
+            <button data-filter="candid" class="px-4 py-2 rounded-full bg-white/[0.03] text-neutral-300 hover:text-white border border-white/10 transition-colors">
+              Candid
+            </button>
+            <button data-filter="aesthetics" class="px-4 py-2 rounded-full bg-white/[0.03] text-neutral-300 hover:text-white border border-white/10 transition-colors">
+              Aesthetics
+            </button>
+          </div>
+        </div>
+
+        <!-- Bento Grid -->
+        <div id="bento-archive-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <!-- Dynamically populated from JS -->
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SECTION 5: THE SEALED ARCHIVAL LETTER      -->
+    <!-- ========================================== -->
+    <section id="letter" class="py-28 px-4 bg-[#08080a] border-t border-white/[0.04]">
+      <div class="max-w-3xl mx-auto text-center">
+        
+        <div class="mb-12 space-y-3">
+          <span class="text-[10px] font-mono tracking-[0.3em] uppercase text-amber-400 block">Chapter V · Sincere Tribute</span>
+          <h2 class="font-serif text-3xl sm:text-5xl text-white font-normal">The Archival Letter</h2>
+          <p class="text-xs sm:text-sm text-neutral-400 font-light leading-relaxed">
+            A private correspondence sealed for Irnum on October 21. Tap the monogram wax seal to unfold.
+          </p>
+        </div>
+
+        <!-- Wax Sealed Envelope Container -->
+        <div class="relative p-6 sm:p-12 rounded-3xl bg-[#0f0f15] border border-amber-500/25 shadow-2xl text-left overflow-hidden">
+          
+          <!-- Envelope Sealed Cover State -->
+          <div id="envelope-cover" class="py-16 text-center space-y-8 transition-all duration-500">
+            <div class="inline-block relative">
+              <button id="wax-seal-button" class="relative w-24 h-24 rounded-full bg-gradient-to-br from-amber-600 via-amber-700 to-amber-900 border-2 border-amber-400/80 shadow-[0_10px_30px_rgba(180,83,9,0.5)] flex items-center justify-center cursor-pointer hover:scale-105 active:scale-95 transition-all group">
+                <span class="font-cinzel text-3xl font-bold text-amber-200 tracking-wider">I</span>
+                <span class="absolute -bottom-7 inset-x-0 text-[9px] font-mono tracking-widest text-amber-300/80 uppercase">Tap Seal</span>
+              </button>
+            </div>
+
+            <div class="space-y-1">
+              <p class="font-serif text-lg text-white font-medium">To Irnum, On Her Birthday</p>
+              <p class="font-mono text-xs text-neutral-400 tracking-wider">October 21, 2026 · Confidential & Sincere</p>
+            </div>
+          </div>
+
+          <!-- Unfolded Letter Body (Hidden Initially) -->
+          <div id="archival-letter-body" class="hidden">
+            <div id="letter-text-container" class="prose max-w-none">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SECTION 6: DIGITAL GUESTBOOK CAPSULE       -->
+    <!-- ========================================== -->
+    <section id="guestbook" class="py-24 px-4 bg-[#0a0a0f] border-t border-white/[0.04]">
+      <div class="max-w-4xl mx-auto">
+        
+        <div class="text-center max-w-xl mx-auto mb-16 space-y-3">
+          <span class="text-[10px] font-mono tracking-[0.3em] uppercase text-amber-400 block">Chapter VI · Time Capsule</span>
+          <h2 class="font-serif text-3xl sm:text-5xl text-white font-normal">Tribute Guestbook</h2>
+          <p class="text-xs sm:text-sm text-neutral-400 font-light leading-relaxed">
+            Leave an enduring wish or reflection for Irnum to commemorate this milestone year.
+          </p>
+        </div>
+
+        <!-- Form Card -->
+        <div class="p-8 rounded-2xl bg-[#121218] border border-white/[0.08] mb-12">
+          <form id="guestbook-form" class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-[10px] font-mono tracking-widest uppercase text-neutral-400 mb-1">Your Name or Pen-Name</label>
+                <input id="guestbook-name" type="text" placeholder="e.g. A True Companion" class="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 focus:border-amber-400 text-sm font-sans text-white outline-none" />
+              </div>
+              <div class="flex items-end">
+                <span class="text-[11px] font-mono text-neutral-400 pb-3">Permanent Archive Record</span>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-[10px] font-mono tracking-widest uppercase text-neutral-400 mb-1">Your Reflection or Birthday Wish</label>
+              <textarea id="guestbook-msg" rows="3" required placeholder="Write a personal note for Irnum..." class="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 focus:border-amber-400 text-sm font-sans text-white outline-none resize-none"></textarea>
+            </div>
+
+            <div class="flex justify-end">
+              <button type="submit" class="px-6 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-black text-xs font-mono tracking-wider uppercase font-semibold transition-colors flex items-center gap-2">
+                <span>Inscribe in Archive</span>
+                <svg class="w-3.5 h-3.5 stroke-current stroke-[2]" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Entries List -->
+        <div id="guestbook-entries" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- Populated from JS & localStorage -->
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- FOOTER                                     -->
+    <!-- ========================================== -->
+    <footer class="py-16 px-4 bg-[#08080a] border-t border-white/[0.06] text-center space-y-4">
+      <div class="w-8 h-8 mx-auto rounded-full border border-amber-400/40 flex items-center justify-center font-cinzel text-xs font-semibold text-amber-300">
+        I
+      </div>
+      <p class="font-serif text-lg text-white">IRNUM · OCTOBER XXI</p>
+      <p class="text-xs font-mono tracking-widest text-neutral-400 uppercase">
+        Dedicated with deep admiration and enduring respect.
+      </p>
+      <div class="text-[10px] font-mono text-neutral-400 pt-4">
+        Preserved for GitHub Deployment · Ready for GitHub Pages
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- ========================================== -->
+  <!-- LIGHTBOX / CINEMA THEATER MODAL            -->
+  <!-- ========================================== -->
+  <div id="media-lightbox" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/95 backdrop-blur-2xl">
+    
+    <!-- Close Button -->
+    <button id="lightbox-close" class="absolute top-6 right-6 p-3 rounded-full bg-white/[0.06] hover:bg-white/[0.15] text-white border border-white/10 transition-colors z-20">
+      <svg class="w-5 h-5 stroke-current stroke-[1.5]" viewBox="0 0 24 24" fill="none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+
+    <!-- Prev / Next Controls -->
+    <button id="lightbox-prev" class="absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 p-3 sm:p-4 rounded-full bg-white/[0.06] hover:bg-white/[0.15] text-white border border-white/10 transition-colors z-20">
+      <svg class="w-6 h-6 stroke-current stroke-[1.5]" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+
+    <button id="lightbox-next" class="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 p-3 sm:p-4 rounded-full bg-white/[0.06] hover:bg-white/[0.15] text-white border border-white/10 transition-colors z-20">
+      <svg class="w-6 h-6 stroke-current stroke-[1.5]" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+
+    <!-- Media Display Frame -->
+    <div class="relative max-w-4xl max-h-[85vh] flex flex-col items-center">
+      
+      <div class="relative max-h-[70vh] rounded-2xl overflow-hidden border border-white/10 shadow-2xl flex items-center justify-center bg-black">
+        <img id="lightbox-img" src="" alt="Irnum Memoir" class="max-h-[70vh] w-auto object-contain hidden" />
+        <video id="lightbox-video" src="" controls playsinline class="max-h-[70vh] w-auto hidden"></video>
+      </div>
+
+      <!-- Captions -->
+      <div class="mt-4 text-center max-w-lg space-y-1">
+        <div id="lightbox-counter" class="text-[10px] font-mono tracking-[0.25em] text-amber-400 uppercase">01 / 50</div>
+        <h4 id="lightbox-title" class="font-serif text-xl sm:text-2xl text-white font-medium">Irnum</h4>
+        <p id="lightbox-desc" class="text-xs text-neutral-300 font-light"></p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Main ES Module Script -->
+  <script type="module" src="assets/js/app.js"></script>
+</body>
+</html>

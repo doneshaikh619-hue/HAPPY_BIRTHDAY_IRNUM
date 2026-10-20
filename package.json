@@ -1,0 +1,9 @@
+{
+  "name": "happy-birthday-irnum",
+  "version": "1.0.0",
+  "description": "Bespoke luxury birthday tribute for Irnum on October 21",
+  "type": "module",
+  "scripts": {
+    "start": "npx serve ."
+  }
+}
