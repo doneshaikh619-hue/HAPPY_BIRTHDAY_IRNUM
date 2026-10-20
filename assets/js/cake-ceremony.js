@@ -1,7 +1,8 @@
 /**
  * High-End 3D Cake Cutting Ceremony & Partner Verification Engine
- * Features physical 3D slice extraction, floating sky lanterns, and firework explosion.
- * Strictly zero emojis.
+ * Features realistic 3D slice extraction, animated knife cut,
+ * floating sky lanterns, and explosive fireworks show.
+ * Background Happy Birthday song continues without interruption.
  */
 
 export class CakeCeremony {
@@ -52,6 +53,7 @@ export class CakeCeremony {
     const blowBtn = document.getElementById("btn-blow-candle");
     const cutBtn = document.getElementById("btn-cut-cake");
     const candleFlame = document.getElementById("cake-candle-flame");
+    const knifeGraphic = document.getElementById("cake-knife-graphic");
 
     if (blowBtn) {
       blowBtn.addEventListener("click", () => this.blowCandle());
@@ -62,8 +64,11 @@ export class CakeCeremony {
     if (cutBtn) {
       cutBtn.addEventListener("click", () => this.cutCake());
     }
+    if (knifeGraphic) {
+      knifeGraphic.addEventListener("click", () => this.cutCake());
+    }
 
-    // Partner Verification Form
+    // Partner Verification Form (Mustafa)
     const partnerForm = document.getElementById("partner-verify-form");
     const partnerInput = document.getElementById("partner-name-input");
     const partnerError = document.getElementById("partner-verify-error");
@@ -86,18 +91,17 @@ export class CakeCeremony {
           this.launchGrandFireworks();
           this.audio.playFireworkBoom();
           
-          // Play "Congratulations and Celebrations" anthem!
-          setTimeout(() => {
-            this.audio.playCongrats();
-          }, 400);
+          // Keep background Happy Birthday song playing continuously without stopping!
+          this.audio.playBirthday();
 
           if (window.triggerGoldenBurst) {
             window.triggerGoldenBurst();
+            setTimeout(() => window.triggerGoldenBurst(), 300);
           }
         } else {
           if (partnerError) {
             partnerError.classList.remove("hidden");
-            partnerError.textContent = "Companion name not recognized. Hint: Enter Mustafa";
+            partnerError.textContent = "Companion name not recognized. Enter Mustafa";
           }
           partnerInput.classList.add("border-red-500");
           setTimeout(() => partnerInput.classList.remove("border-red-500"), 1000);
@@ -115,6 +119,7 @@ export class CakeCeremony {
     const statusText = document.getElementById("cake-ceremony-status");
     const blowBtn = document.getElementById("btn-blow-candle");
     const cutBtn = document.getElementById("btn-cut-cake");
+    const knife = document.getElementById("cake-knife-graphic");
 
     if (flame) {
       flame.classList.add("opacity-0", "scale-50");
@@ -133,7 +138,7 @@ export class CakeCeremony {
     this.spawnLanterns(21);
 
     if (statusText) {
-      statusText.innerHTML = "Wishes released into the night sky. <span class='text-amber-300 font-medium'>Now cut the birthday cake.</span>";
+      statusText.innerHTML = "Candle blown and wishes released. <span class='text-amber-300 font-medium'>Click the knife or button to cut the cake!</span>";
     }
 
     if (blowBtn) {
@@ -142,6 +147,9 @@ export class CakeCeremony {
     if (cutBtn) {
       cutBtn.classList.remove("opacity-40", "pointer-events-none");
       cutBtn.classList.add("animate-pulse");
+    }
+    if (knife) {
+      knife.classList.add("knife-hover-invite");
     }
   }
 
@@ -155,16 +163,17 @@ export class CakeCeremony {
     const statusText = document.getElementById("cake-ceremony-status");
     const cutBtn = document.getElementById("btn-cut-cake");
 
+    // Slicing sound
     this.audio.playKnifeCut();
 
-    // Knife slicing down
+    // Knife glides and slices down through the cake
     if (knife) {
-      knife.classList.remove("hidden");
+      knife.classList.remove("knife-hover-invite");
       knife.classList.add("animate-knife-cut");
     }
 
     setTimeout(() => {
-      // Physical wedge slice slides forward out of cake onto serving plate!
+      // 3D wedge slice physically pulls forward out of cake onto dessert plate
       if (slicePiece) {
         slicePiece.classList.add("slice-slide-out");
       }
@@ -174,7 +183,7 @@ export class CakeCeremony {
       }
 
       this.audio.playChime();
-      this.audio.playBirthday(); // Start Happy Birthday song!
+      this.audio.playBirthday(); // Happy Birthday piano song continues/starts!
 
       if (window.triggerGoldenBurst) {
         window.triggerGoldenBurst();
@@ -182,7 +191,7 @@ export class CakeCeremony {
       }
 
       if (statusText) {
-        statusText.innerHTML = "Slice extracted for <span class='text-amber-400 font-medium gold-shimmer'>Irnum</span>. Happy Birthday!";
+        statusText.innerHTML = "Cake slice extracted for <span class='text-amber-400 font-medium gold-shimmer'>Irnum</span>. Happy Birthday!";
       }
 
       if (cutBtn) {
@@ -295,21 +304,20 @@ export class CakeCeremony {
       "245, 158, 11"   // Amber
     ];
 
-    // Launch 5 rockets bursting at different heights
-    for (let r = 0; r < 5; r++) {
+    for (let r = 0; r < 6; r++) {
       setTimeout(() => {
         const targetX = w * 0.2 + Math.random() * (w * 0.6);
-        const targetY = h * 0.2 + Math.random() * (h * 0.35);
+        const targetY = h * 0.15 + Math.random() * (h * 0.35);
         this.explodeRocket(targetX, targetY, colors[r % colors.length]);
-      }, r * 280);
+      }, r * 240);
     }
   }
 
   explodeRocket(x, y, color) {
-    const particleCount = 75;
+    const particleCount = 80;
     for (let i = 0; i < particleCount; i++) {
       const angle = Math.random() * Math.PI * 2;
-      const speed = Math.random() * 7 + 2;
+      const speed = Math.random() * 7.5 + 2.5;
       this.fireworkParticles.push({
         x: x,
         y: y,
@@ -332,7 +340,7 @@ export class CakeCeremony {
       p.x += p.speedX;
       p.y += p.speedY;
       p.speedX *= 0.97;
-      p.speedY = p.speedY * 0.97 + 0.08; // gravity
+      p.speedY = p.speedY * 0.97 + 0.08;
       p.alpha -= p.decay;
 
       if (p.alpha <= 0) {

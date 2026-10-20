@@ -1,19 +1,15 @@
 /**
- * Audio Engine with Dedicated Birthday and Celebration Tracks
+ * Audio Engine with Dedicated Continuous Birthday Track
  * Plus Web Audio tactile and explosive firework sound effects.
+ * Congratulations audio removed per user request so Birthday track never stops.
  */
 
 export class AmbientAudioEngine {
   constructor() {
     this.birthdayAudio = new Audio("assets/audio/happy-birthday-instrumental.mp3");
     this.birthdayAudio.loop = true;
-    this.birthdayAudio.volume = 0.6;
+    this.birthdayAudio.volume = 0.65;
 
-    this.congratsAudio = new Audio("assets/audio/congratulations-celebration.mp3");
-    this.congratsAudio.loop = false;
-    this.congratsAudio.volume = 0.7;
-
-    this.currentTrack = null;
     this.isPlaying = false;
     this.ctx = null;
   }
@@ -30,8 +26,8 @@ export class AmbientAudioEngine {
     this.initCtx();
     if (this.ctx && this.ctx.state === "suspended") this.ctx.resume();
 
-    if (this.isPlaying && this.currentTrack === "birthday") {
-      this.pauseAll();
+    if (this.isPlaying) {
+      this.pauseBirthday();
     } else {
       this.playBirthday();
     }
@@ -42,37 +38,16 @@ export class AmbientAudioEngine {
     this.initCtx();
     if (this.ctx && this.ctx.state === "suspended") this.ctx.resume();
 
-    this.congratsAudio.pause();
-    this.congratsAudio.currentTime = 0;
-
     this.birthdayAudio.play().then(() => {
       this.isPlaying = true;
-      this.currentTrack = "birthday";
     }).catch((err) => {
       console.warn("Audio play prevented:", err);
     });
   }
 
-  playCongrats() {
-    this.initCtx();
-    if (this.ctx && this.ctx.state === "suspended") this.ctx.resume();
-
+  pauseBirthday() {
     this.birthdayAudio.pause();
-
-    this.congratsAudio.currentTime = 0;
-    this.congratsAudio.play().then(() => {
-      this.isPlaying = true;
-      this.currentTrack = "congrats";
-    }).catch((err) => {
-      console.warn("Congrats audio play prevented:", err);
-    });
-  }
-
-  pauseAll() {
-    this.birthdayAudio.pause();
-    this.congratsAudio.pause();
     this.isPlaying = false;
-    this.currentTrack = null;
   }
 
   playKnifeCut() {
@@ -81,7 +56,6 @@ export class AmbientAudioEngine {
     if (this.ctx.state === "suspended") this.ctx.resume();
 
     const now = this.ctx.currentTime;
-    // Crisp metal slice whoosh
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
     const filter = this.ctx.createBiquadFilter();
@@ -111,7 +85,7 @@ export class AmbientAudioEngine {
 
     const now = this.ctx.currentTime;
 
-    // 1. Initial rocket whistle
+    // 1. Rocket whistle
     const whistle = this.ctx.createOscillator();
     const whistleGain = this.ctx.createGain();
     whistle.type = "sine";
@@ -124,19 +98,18 @@ export class AmbientAudioEngine {
     whistle.start(now);
     whistle.stop(now + 0.32);
 
-    // 2. Heavy boom explosion
+    // 2. Heavy explosion
     setTimeout(() => {
       if (!this.ctx) return;
       const t = this.ctx.currentTime;
 
-      // Low frequency sub boom
       const boom = this.ctx.createOscillator();
       const boomGain = this.ctx.createGain();
       boom.type = "triangle";
       boom.frequency.setValueAtTime(120, t);
       boom.frequency.exponentialRampToValueAtTime(35, t + 0.9);
 
-      boomGain.gain.setValueAtTime(0.28, t);
+      boomGain.gain.setValueAtTime(0.3, t);
       boomGain.gain.exponentialRampToValueAtTime(0.0001, t + 1.2);
 
       boom.connect(boomGain);
@@ -144,7 +117,6 @@ export class AmbientAudioEngine {
       boom.start(t);
       boom.stop(t + 1.3);
 
-      // Sparkling crackle
       for (let i = 0; i < 4; i++) {
         setTimeout(() => {
           if (!this.ctx) return;

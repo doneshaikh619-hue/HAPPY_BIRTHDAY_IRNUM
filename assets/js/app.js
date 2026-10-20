@@ -224,8 +224,17 @@ class LightboxManager {
       this.imageEl.classList.add("hidden");
       this.phoneWrapper.classList.remove("hidden");
       this.videoEl.src = `assets/media/${item.file}`;
+      this.videoEl.loop = true;
+      this.videoEl.muted = false;
       this.videoEl.load();
-      this.videoEl.play().catch(() => {});
+
+      const playPromise = this.videoEl.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          this.videoEl.muted = true;
+          this.videoEl.play().catch(() => {});
+        });
+      }
     } else {
       this.phoneWrapper.classList.add("hidden");
       if (this.videoEl) {
@@ -260,7 +269,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Setup Audio Button
+  // Setup Continuous Audio Button
   const audioBtn = document.getElementById("btn-ambient-audio");
   const audioWaves = document.getElementById("audio-equalizer");
   const audioStatusText = document.getElementById("audio-status-text");
@@ -284,11 +293,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Update audio UI on audio element events
   audioEngine.birthdayAudio.addEventListener("play", () => updateAudioUI(true));
   audioEngine.birthdayAudio.addEventListener("pause", () => updateAudioUI(false));
-  audioEngine.congratsAudio.addEventListener("play", () => updateAudioUI(true));
-  audioEngine.congratsAudio.addEventListener("pause", () => updateAudioUI(false));
 
   function initExperience() {
     new CakeCeremony(audioEngine);
@@ -335,7 +341,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 3. Cinema Video Reels inside Luxury Smartphone Frames
+  // 3. Cinema Video Reels - Fast Preload, No Freeze, Infinite Loop
   function renderCinemaReels() {
     const container = document.getElementById("cinema-reels-grid");
     if (!container) return;
@@ -346,19 +352,19 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="mobile-device-frame relative w-[280px] h-[500px] cursor-pointer group transition-all duration-500 hover:scale-[1.02]" data-reel-index="${idx}">
           
           <!-- Notch -->
-          <div class="mobile-device-notch">
+          <div class="mobile-device-notch pointer-events-none">
             <span class="mobile-camera-lens"></span>
           </div>
 
-          <!-- Video Progress Bar (Story style) -->
-          <div class="absolute top-2 inset-x-4 z-30 flex gap-1">
+          <!-- Video Progress Bar -->
+          <div class="absolute top-2 inset-x-4 z-30 flex gap-1 pointer-events-none">
             <div class="h-0.5 flex-1 bg-white/40 rounded-full overflow-hidden">
               <div class="story-progress-bar h-full bg-amber-400 w-0 transition-all duration-300"></div>
             </div>
           </div>
 
-          <!-- Transcoded H.264 Video Player -->
-          <video src="assets/media/${reel.file}" class="w-full h-full object-cover" loop muted playsinline preload="metadata"></video>
+          <!-- Transcoded Video Player (preload=auto, loop) -->
+          <video src="assets/media/${reel.file}" class="w-full h-full object-cover" loop muted playsinline preload="auto"></video>
           
           <!-- Ambient Overlay -->
           <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-black/30 pointer-events-none z-10"></div>
@@ -371,13 +377,13 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
 
           <!-- Unmute/Mute Toggle Button -->
-          <button class="btn-reel-unmute absolute top-10 right-4 z-30 p-2 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white hover:text-amber-300 transition-colors">
+          <button class="btn-reel-unmute absolute top-10 right-4 z-30 p-2 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white hover:text-amber-300 transition-colors pointer-events-auto">
             <svg class="icon-muted w-4 h-4 stroke-current stroke-[1.5]" viewBox="0 0 24 24" fill="none"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
             <svg class="icon-unmuted w-4 h-4 stroke-current stroke-[1.5] hidden" viewBox="0 0 24 24" fill="none"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
           </button>
 
           <!-- Bottom Story Meta -->
-          <div class="absolute bottom-0 inset-x-0 p-5 z-20 text-left">
+          <div class="absolute bottom-0 inset-x-0 p-5 z-20 text-left pointer-events-none">
             <div class="flex items-center gap-2 mb-1">
               <span class="text-[9px] font-mono tracking-[0.2em] text-amber-400 uppercase">${reel.duration}</span>
               <span class="w-1 h-1 rounded-full bg-white/40"></span>
@@ -391,7 +397,6 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     `).join("");
 
-    // Video play/pause on hover & sound toggle
     const videoCards = container.querySelectorAll("[data-reel-index]");
     videoCards.forEach((card) => {
       const video = card.querySelector("video");
@@ -567,12 +572,12 @@ document.addEventListener("DOMContentLoaded", () => {
         notes = [
           {
             name: "Lifelong Admirer",
-            date: "October 21, 2026",
+            date: "21 October 2026",
             message: "Irnum, you represent the highest standard of loyalty and composure. Honored to celebrate your day."
           },
           {
-            name: "A True Friend",
-            date: "October 21, 2026",
+            name: "Mustafa",
+            date: "21 October 2026",
             message: "May every path you step onto this year lead to brilliance and enduring peace."
           }
         ];
